@@ -1,0 +1,58 @@
+
+body{
+    text-align: center;
+}
+#gameScreen{
+    display:inline-block;
+    border-collapse: collapse;
+    border: black 5px solid;
+    height: 540px;
+    width: 270px;
+    overflow-y: hidden;
+    text-align: center;
+    margin: 0;
+}
+
+#mainCharactor{
+    display:inline-block;
+    height: 80px;
+    width: 80px;
+    border: black solid 8px;
+    position: absolute;
+    top: 0;
+}
+.empty{
+    height: 27px;
+    width: 27px;
+    border: black 1px solid;
+}
+.row{
+    border:none;
+    display: block;
+    width: 100%;
+    display: flex;
+    height: 26px;
+    border-top: black solid 0.5px;
+    border-collapse: collapse;
+    position: sticky;
+
+}
+.row div{
+    border: none;
+    border-right: black solid 0.5px;
+    display: inline-block;
+    width: 27px;
+    height: 27px;
+    border-collapse: collapse;
+}
+.filled{
+    background-color: black;
+}
+.button{
+    margin-left:20px;
+    position: absolute;
+    display: inline-block;
+    height: 100px;
+    width: 100px;
+    border: black solid 12px;
+}
