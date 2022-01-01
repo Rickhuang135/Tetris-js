@@ -48,11 +48,26 @@ body{
 .filled{
     background-color: black;
 }
-.button{
+#button{
     margin-left:20px;
     position: absolute;
     display: inline-block;
     height: 100px;
     width: 100px;
     border: black solid 12px;
+    background-image:url(./Images/playbutton.png);
+    background-size:130%;
+    background-position: center;
+}
+#buttonDsiaply{
+    height:100px;
+    width: 100px;
+}
+#buttonDisplay div{
+    height:24px;
+    border:black solid 0.5px;
+    display: flex;
+}
+#Theme{
+    /* display: none; */
 }

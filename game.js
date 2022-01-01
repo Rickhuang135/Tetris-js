@@ -1,4 +1,4 @@
-let square120=document.getElementById('gameScreen')
+let square120=document.getElementById('gameScreen');
 for(var i=0;i<20;i++){
     var rows=document.createElement('div')
     rows.className=`row ${i+1}`   
@@ -9,16 +9,45 @@ for(var i=0;i<20;i++){
         rows2.className=`column${j+1} empty`
     }
 }
+let button=document.getElementById('buttonDisplay');
+let buttonbg=document.getElementById('button')
+button.style.display='none';
+for(var i=0;i<4;i++){
+    var rows=document.createElement('div')
+    rows.className=`Nrow${i+1}`
+    button.appendChild(rows)
+    for(var j=0;j<4;j++){
+        var rows2=document.createElement('div')
+        rows.appendChild(rows2);
+        rows2.className=`column${j+1} empty`
+    }
+}
 let nextshape=Math.floor(Math.random()*7);
 let currentshape=Math.floor(Math.random()*7);
-let busy=false
-let row=document.getElementsByClassName("row")
-let currentRow=1
-let ccolumn=5
+let busy=false;
+let row=document.getElementsByClassName("row");
+let currentRow=1;
+let ccolumn=5;
 let pause=true
 let WhereItWas=[]
 let clean=true
 let rotatee=0
+let commit=false
+
+function Dabutton(){
+    if(pause==true){
+        buttonbg.style.background='none'
+        button.style.display='block';
+        pause=false;
+    }
+    else{
+        buttonbg.style.background='url(./Images/pause-button.png)'
+        buttonbg.style.backgroundSize='170%'
+        buttonbg.style.backgroundPosition='center'
+        button.style.display='none'
+        pause=true;
+    }
+}
 
 function rowCheck(){
     for(var i=1;i<row.length;i++){
@@ -43,9 +72,7 @@ function rowCheck(){
 
 function moveblock(x,y){
     if (clean == false) {
-        while(WhereItWas.length!=0){
-            WhereItWas.shift()
-        }
+        WhereItWas=[]
         rowCheck()
         clean=true
         console.log("cleaned")
@@ -53,8 +80,10 @@ function moveblock(x,y){
     if(row[currentRow+x]!=undefined){
         if(row[currentRow+x].childNodes[ccolumn+y]!=undefined){
             if(row[currentRow+x].childNodes[ccolumn+y].classList.contains('filled')==false||WhereItWas.findIndex(un=>un==row[currentRow+x].childNodes[ccolumn+y])!=-1){
-                row[currentRow+x].childNodes[ccolumn+y].classList.add('filled')
-                WhereItWas.push(row[currentRow+x].childNodes[ccolumn+y])
+                if(commit==true){
+                    row[currentRow+x].childNodes[ccolumn+y].classList.add('filled')
+                    WhereItWas.push(row[currentRow+x].childNodes[ccolumn+y])
+                }
                 return true
             }else{
                 return false
@@ -64,8 +93,9 @@ function moveblock(x,y){
         }
     }else{
         return false
-    }   
+    }
 }
+
 function shapedown(){
     var one=undefined
     var two=undefined
@@ -208,9 +238,11 @@ function removeblock(){
         WhereItWas[i].classList.remove('filled');
     }
 }
+
 function shape(key='not important'){
     if(clean==true&pause==false){
         removeblock()
+        WhereItWas=[]
         if(key=='downkey'){
             busy=true;
             currentRow++;
@@ -240,6 +272,7 @@ function shape(key='not important'){
             }
         }
     }
+    commit=true;
     if(shapedown()==false){
         currentRow--
         removeblock()
@@ -256,16 +289,7 @@ function shape(key='not important'){
     }else{
         shapedown()
     }
-}
-
-
-function Dabutton(){
-    if(pause==true){
-        pause=false;
-    }
-    else{
-        pause=true;
-    }
+    commit=false
 }
 
 function down(){
