@@ -13,8 +13,19 @@
     </audio>
     <div id="gameScreen">
     </div>
-    <div onclick=Dabutton() id="button">
-        <div id='buttonDisplay'></div>
+    <div id='rightpannel'>
+        <div id='score'>
+            <h1>Score: <br> <span id='changer'>0</span></h1>
+        </div>
+        <div id='levelout'>
+            <h1>Level: <span id="levelin">0</span><span id='levelup' onclick=addlevel()>^</span></h1>
+        </div>
+        <div>
+            <h1 id='nextword'>Begin</h1>
+        </div>
+        <div onclick=Dabutton() id="button">
+            <div id='buttonDisplay'></div>
+        </div>
     </div>
     <script src="game.js" defer></script>
 </body>
