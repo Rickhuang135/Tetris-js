@@ -1,6 +1,81 @@
 
 body{
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+}
+ol{
+    overflow-y: scroll;
+    height: 360px;
+    margin: 0;
+}
+ol li div{
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+    width: 270px;
+}
+.sb, .reset{
+    height: 60px;
+    width: 200px;
+    border-radius: 15px;
+    font-size: 2em;
+    border: transparent;
+    display: inline-block;
+    z-index: 1000;
+}
+#notice{
+    margin: 0;
+    background-color: wheat;
+    color: black;
+    display: block;
+}
+#spacing{
+    min-height: 70px;
+}
+.sb:hover, .reset:hover, #levelup:hover{
+    background-color: grey;
+    color: white;
+}
+#cs{
+    position: absolute;
+    height: 280px;
+    width: 260px;
+    transform: translate(146%,-160%);
+    z-index:999;
+}
+h4{
+    margin: 0;
+    font-size: 1.4em;
+}
+#setup1 h1{
+    font-size: 4.5em;
+    margin: 0;
+    font-weight: 1000;
+    text-shadow:grey 3px 2px;
     text-align: center;
+}
+#setup2{
+    display: none;
+}
+#setup3{
+    display: none;
+}
+#setup3 h1{
+    font-size: 4em;
+    margin: 0;
+    font-weight: 1000;
+    text-shadow:grey 3px 2px;
+    text-align: center;
+    display:block
+}
+.score{
+    float: right;
+}
+ol li div span{
+    min-width:75px ;
+    height: 30px;
+    overflow-y: hidden;
 }
 #gameScreen{
     display:inline-block;
@@ -11,15 +86,7 @@ body{
     overflow-y: hidden;
     text-align: center;
     margin: 0;
-}
-
-#mainCharactor{
-    display:inline-block;
-    height: 80px;
-    width: 80px;
-    border: black solid 8px;
-    position: absolute;
-    top: 0;
+    margin-right:10px ;
 }
 .empty{
     height: 27px;
@@ -45,14 +112,36 @@ body{
     height: 27px;
     border-collapse: collapse;
 }
-.filled{
-    background-color: black;
+#leftpannel{
+    display: inline-block;
+    min-width: 360px;
+    padding: 10px;
+    text-align: center;
+}
+#leftpannel h2{
+    font-size: 2.1em;
+    margin: 0;
+    margin-bottom: 20px;
+}
+#head{
+    list-style: none;
+    position: fixed;
+}
+#namescore{
+    margin: 0;
+    display: flex;
+    justify-content: space-evenly;
+}
+#namescore p{
+    margin: 0;
+    font-size: 1.5em;
 }
 #rightpannel{
-    margin-left: 20px;
-    position: absolute;
+    margin-left: 50px;
+    margin-right: 50px;
     display: inline-block;
     width: 100px;
+    text-align: center;
 }
 
 #button{
@@ -72,7 +161,7 @@ body{
 #buttonDisplay div{
     height:24px;
     border:transparent 0.5px;
-    display: flex;
+    display:flex;
 }
 #levelin{
     transform: translateX(10px);
@@ -81,6 +170,7 @@ body{
 #levelup{
     float: right;
     display: inline-block;
+    border-radius: 4px;
 }
 #Theme{
     /* display: none; */
