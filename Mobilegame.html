@@ -19,30 +19,39 @@
             <p>level</p>
             <p>score</p>
         </div>
-        <ol id='scoreboard'>
-            <!-- <li id='recscore' oncontextmenu=deletee()><input type="text" name="username" placeholder="Enter username"></li> -->
-        </ol>
+        <ol id='scoreboard'></ol>
+    </div>
+    <div id='centerpannel'>
+        <div id="gameScreen"></div>
         <div id="cs">
             <div id='setup1'>
                 <h1 id='heading'>Tetris</h1>
                 <h4>re-created</h4>
                 <div id='spacing'>
-                    <button class='reset' onclick=endgame()>reset game</button>
+                    <button class='reset button' onclick=endgame()>reset game</button>
                 </div>
-                <button class='sb' onclick=cs(2)>settings</button>
+                <button class='sb button' onclick=cs(2)>settings</button>
+                <br>
+                <button class='play button' onclick=Dabutton()>begin</button>
             </div>
             <div id='setup2'>
                 <button onclick=ret()>sorry this page is not ready yet</button>
+                <button class='play button' onclick=Dabutton()>begin</button>
             </div>
             <div id='setup3'>
                 <h1 id='heading'>Game Over</h1>
                 <label for="username"><strong>please enter your username here</strong></label>
-                <input type="text" placeholder="null" name="username">
-                <button class='sb' onclick=cs(2)>settings</button>
+                <input type="text" placeholder="null" name="username" onkeyup=recordscore()>
+                <div id='confit'>
+                    <button class='sbutton' onclick=confit(this)>confirm</button>
+                    <button class='sbutton' onclick=confit(this)>cancel</button>
+                </div>
+                <button class='sb button' onclick=cs(2)>settings</button>
+                <br>
+                <button class='play button' onclick=Dabutton()>New game</button>
             </div>
         </div>
     </div>
-    <div id="gameScreen"></div>
     <div id='rightpannel'>
         <div id='score'>
             <h1>Score: <br> <span id='changer'>0</span></h1>

@@ -4,6 +4,9 @@ body{
     justify-content: center;
     box-sizing: border-box;
 }
+button{
+    background-color: #cccccc;
+}
 ol{
     overflow-y: scroll;
     height: 360px;
@@ -15,7 +18,7 @@ ol li div{
     justify-content: space-between;
     width: 270px;
 }
-.sb, .reset{
+.button{
     height: 60px;
     width: 200px;
     border-radius: 15px;
@@ -23,6 +26,7 @@ ol li div{
     border: transparent;
     display: inline-block;
     z-index: 1000;
+    margin-top:10px;
 }
 #notice{
     margin: 0;
@@ -31,9 +35,9 @@ ol li div{
     display: block;
 }
 #spacing{
-    min-height: 70px;
+    min-height: 60px;
 }
-.sb:hover, .reset:hover, #levelup:hover{
+.button:hover, #levelup:hover, .sbutton:hover{
     background-color: grey;
     color: white;
 }
@@ -41,8 +45,9 @@ ol li div{
     position: absolute;
     height: 280px;
     width: 260px;
-    transform: translate(146%,-160%);
+    transform: translate(4%,-180%);
     z-index:999;
+    text-align: center;
 }
 h4{
     margin: 0;
@@ -60,6 +65,7 @@ h4{
 }
 #setup3{
     display: none;
+    text-align: center;
 }
 #setup3 h1{
     font-size: 4em;
@@ -68,6 +74,21 @@ h4{
     text-shadow:grey 3px 2px;
     text-align: center;
     display:block
+}
+#confit{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-evenly;
+}
+.sbutton{
+    border-radius: 10px;
+    font-size: 1.4em;
+    height: 50px;
+    width: 90px;
+    border: transparent;
+}
+.reset{
+    display: none;
 }
 .score{
     float: right;
@@ -168,6 +189,7 @@ ol li div span{
     display: inline-block;
 }
 #levelup{
+    background-color: #cccccc;
     float: right;
     display: inline-block;
     border-radius: 4px;

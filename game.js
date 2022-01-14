@@ -11,7 +11,7 @@ for(var i=0;i<20;i++){
         rows2.style.backgroundColor='transparent'
     }
 }
-let reset=false;
+let reset=true;
 let score=0;
 let scoredisplay=document.getElementById('changer')
 let buttondiscript=document.getElementById('nextword')
@@ -47,7 +47,6 @@ function initialcolor(){
         case 6:color='#72CB3B';break
     }
 }
-initialcolor()
 let nextcolor=undefined
 let leveldisplay=document.getElementById('levelin')
 let button=document.getElementById('buttonDisplay');
@@ -77,7 +76,7 @@ let scoreboard=document.getElementById('scoreboard')
 let userinput=document.getElementsByName('username')[0]
 
 function ret(){
-    if(reset==true){
+    if(reset==true&score>0){
         cs(3)
     }else{
         cs(1)
@@ -130,6 +129,7 @@ function recordscore(){
         recitem.innerHTML=`<div><span>null</span><span>${line}</span><span>${level}</span><span class='score'>${score}</span></div>`
         scoreboard.appendChild(recitem)
         element=recitem
+        level=0
     }else{
         if(userinput.value==null||userinput.value==''){
             element.children[0].children[0].innerHTML='null'
@@ -149,13 +149,6 @@ function cs(state='0'){
     }
 }
 cs(1)
-if(localStorage.getItem('firsttime')==null){
-    var notice=document.createElement('div')
-    notice.id='notice'
-    notice.innerHTML='clicking the location of the "begin" button will pause game'
-    cd.children[0].appendChild(notice)
-    localStorage.setItem('firsttime',false)
-}
 
 function nextShape(shape){
     if(button.childNodes[1].childNodes!=undefined){
@@ -179,6 +172,7 @@ function nextShape(shape){
         }
     }
 }
+
 function deletee(element){
     addEventListener("contextmenu",(e)=>{e.preventDefault()})
     if(window.confirm('do you wish to delet this record?')){
@@ -192,17 +186,23 @@ function deletee(element){
         listusers()
     }
 }
+
 function addlevel(){
-    if(level<23&reset==false){
+    if(level<23){
         level+=3
         leveldisplay.innerHTML=level
     }
 }
+
+let newbuttons=document.getElementsByClassName('play')
+
 function Dabutton(){
-    if(pause==true){
-        if(reset==true){
+    if(pause){
+        if(reset){
             listusers()
             resetboard()
+            newbuttons[0].innerHTML='Resume'
+            newbuttons[1].innerHTML='Resume'
             reset=false
         }
         buttonbg.style.background='none'
@@ -224,6 +224,19 @@ function Dabutton(){
     }
 }
 
+function confit(x){
+    recordscore()
+    if(x.innerHTML=='cancel'){
+        element.remove()
+    }else{
+        listusers()
+    }
+    score=0
+    leveldisplay.innerHTML=level
+    cs(1)
+    element=undefined
+}
+
 function resetboard(){
     for(var i=0;i<row.length;i++){
         for(var j=0;j<row[i].childNodes.length;j++){
@@ -231,14 +244,12 @@ function resetboard(){
         }
     }
     score=0
-    level=0
     line=0
     scoredisplay.innerHTML=score
     leveldisplay.innerHTML=level
     shapearray=selectshape()
-    increment=0;
+    increment=1;
     currentshape=shapearray[0]
-    console.log(currentshape)
     initialcolor()
     nextshape=shapearray[1]
     currentRow=1;
@@ -253,6 +264,8 @@ function endgame(){
     buttondiscript.innerHTML='Play again'
     pause=true;
     reset=true;
+    newbuttons[0].innerHTML='New game'
+    newbuttons[1].innerHTML='New game'
     audio.pause();
     cs(3)
     recordscore()
@@ -572,11 +585,22 @@ document.addEventListener("keydown",function(event){
             shape('upkey')
         }
     }
-    if(reset){
-        setTimeout(recordscore,50)
-        recordscore()
+})
+document.addEventListener('visibilitychange',function(){
+    if(reset==false){
+        if(pause){
+            pause=false
+        }
+        Dabutton()
     }
 })
+document.body.onkeyup=function(e){
+    if(reset==false){
+        if(e.keyCode==32){
+            Dabutton()
+        }
+    }
+}
 setTimeout(down,(518-19*(level+1))*1000/480)
 listusers()
 // localStorage.clear()
