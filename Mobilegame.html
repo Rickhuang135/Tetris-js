@@ -14,10 +14,10 @@
     <div id='leftpannel'>
         <h2>score board</h2>
         <div id='namescore'>
-            <p>name</p>
-            <p>lines</p>
-            <p>level</p>
-            <p>score</p>
+            <p id='wp'>name</p>
+            <p onclick=sortusers(1) class='tbutton'>lines</p>
+            <p onclick=sortusers(2) class='tbutton'>level</p>
+            <p onclick=sortusers(3) class='tbutton active'>score</p>
         </div>
         <ol id='scoreboard'></ol>
     </div>
@@ -30,15 +30,15 @@
                 <div id='spacing'>
                     <button class='reset button' onclick=endgame()>reset game</button>
                 </div>
-                <button class='sb button' onclick=cs(2)>settings</button>
+                <button class='sb button' onclick=music()>Music:<span class='Mstate'>on</span></button>
                 <br>
                 <button class='play button' onclick=Dabutton()>begin</button>
             </div>
-            <div id='setup2'>
+            <!-- <div id='setup2'>
                 <button onclick=ret()>sorry this page is not ready yet</button>
                 <button class='play button' onclick=Dabutton()>begin</button>
-            </div>
-            <div id='setup3'>
+            </div> -->
+            <div id='setup2'>
                 <h1 id='heading'>Game Over</h1>
                 <label for="username"><strong>please enter your username here</strong></label>
                 <input type="text" placeholder="null" name="username" onkeyup=recordscore()>
@@ -46,7 +46,7 @@
                     <button class='sbutton' onclick=confit(this)>confirm</button>
                     <button class='sbutton' onclick=confit(this)>cancel</button>
                 </div>
-                <button class='sb button' onclick=cs(2)>settings</button>
+                <button class='sb button' onclick=music()>Music:<span class='Mstate'>on</span></button>
                 <br>
                 <button class='play button' onclick=Dabutton()>New game</button>
             </div>

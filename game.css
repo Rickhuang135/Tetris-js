@@ -16,7 +16,7 @@ ol li div{
     margin-top: 5px;
     display: flex;
     justify-content: space-between;
-    width: 270px;
+    width: 300px;
 }
 .button{
     height: 60px;
@@ -28,16 +28,18 @@ ol li div{
     z-index: 1000;
     margin-top:10px;
 }
-#notice{
-    margin: 0;
-    background-color: wheat;
-    color: black;
-    display: block;
-}
 #spacing{
     min-height: 60px;
 }
-.button:hover, #levelup:hover, .sbutton:hover{
+#wp{
+    padding-top: 5px;
+}
+.tbutton{
+    background-color:#cccccc;
+    padding: 5px;
+    border-radius: 4px;
+}
+.button:hover, #levelup:hover, .sbutton:hover, .tbutton:hover, .active{
     background-color: grey;
     color: white;
 }
@@ -63,11 +65,11 @@ h4{
 #setup2{
     display: none;
 }
-#setup3{
+#setup2{
     display: none;
     text-align: center;
 }
-#setup3 h1{
+#setup2 h1{
     font-size: 4em;
     margin: 0;
     font-weight: 1000;
@@ -135,7 +137,7 @@ ol li div span{
 }
 #leftpannel{
     display: inline-block;
-    min-width: 360px;
+    min-width: 340px;
     padding: 10px;
     text-align: center;
 }
@@ -151,10 +153,11 @@ ol li div span{
 #namescore{
     margin: 0;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: right;
 }
 #namescore p{
     margin: 0;
+    margin-right: 20px;
     font-size: 1.5em;
 }
 #rightpannel{
@@ -189,11 +192,8 @@ ol li div span{
     display: inline-block;
 }
 #levelup{
-    background-color: #cccccc;
     float: right;
+    background-color: #cccccc;
     display: inline-block;
     border-radius: 4px;
-}
-#Theme{
-    /* display: none; */
 }

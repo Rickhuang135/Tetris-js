@@ -75,11 +75,30 @@ let commit=false
 let scoreboard=document.getElementById('scoreboard')
 let userinput=document.getElementsByName('username')[0]
 
-function ret(){
-    if(reset==true&score>0){
-        cs(3)
-    }else{
-        cs(1)
+// function ret(){
+//     if(reset==true&score>0){
+//         cs(2)
+//     }else{
+//         cs(1)
+//     }
+// }
+
+function clearscore(){
+    while(scoreboard.childNodes.length>0){
+        scoreboard.removeChild(scoreboard.firstChild)
+    }
+}
+
+function sortusers(ref=3){
+    let sortbuttons=Array.prototype.slice.call(document.getElementsByClassName('tbutton'))
+    sortbuttons.forEach(e=>e.classList.remove('active'))
+    sortbuttons[ref-1].classList.add('active')
+    let newarray=Array.prototype.slice.call(scoreboard.children)
+    newarray.sort(function(a,b){return b.children[0].children[ref].innerHTML-a.children[0].children[ref].innerHTML})
+    scoreboard.children=newarray
+    clearscore()
+    for(var i=0;i<newarray.length;i++){
+        scoreboard.appendChild(newarray[i])
     }
 }
 
@@ -99,10 +118,9 @@ function listusers(){
         localStorage.setItem(`user${usernumb}line`,totalline)
         localStorage.setItem(`user${usernumb}score`,score)
         element=undefined
+        level=0;
     }
-    while(scoreboard.childNodes.length>0){
-        scoreboard.removeChild(scoreboard.firstChild)
-    }
+    clearscore()
     usernumb=localStorage.getItem('usernumb')
     if(usernumb==undefined){
         localStorage.setItem('usernumb',0)
@@ -118,6 +136,7 @@ function listusers(){
             lisitem.innerHTML=`<div><span>${username}</span><span>${localStorage.getItem(`user${i}line`)}</span><span>${localStorage.getItem(`user${i}level`)}</span><span class='score'>${localStorage.getItem(`user${i}score`)}</span></div>`
             scoreboard.appendChild(lisitem)
         }
+        sortusers()
     }
 }
 
@@ -129,7 +148,6 @@ function recordscore(){
         recitem.innerHTML=`<div><span>null</span><span>${line}</span><span>${level}</span><span class='score'>${score}</span></div>`
         scoreboard.appendChild(recitem)
         element=recitem
-        level=0
     }else{
         if(userinput.value==null||userinput.value==''){
             element.children[0].children[0].innerHTML='null'
@@ -140,12 +158,19 @@ function recordscore(){
 }
 
 cd=document.getElementById('cs')
+// function cs(state='0'){
+//     switch(state){
+//         case 0:cd.children[0].style.display='none';cd.children[1].style.display='none';cd.children[2].style.display='none';break
+//         case 1:cd.children[0].style.display='block';var res=document.getElementById('spacing').children[0];if(score>0){res.style.display='inline-block'}else{res.style.display='none'};cd.children[1].style.display='none';cd.children[2].style.display='none';break
+//         // case 2:cd.children[0].style.display='none';cd.children[1].style.display='block';cd.children[2].style.display='none';break
+//         case 3:cd.children[0].style.display='none';cd.children[1].style.display='none';cd.children[2].style.display='block';userinput.focus();break
+//     }
+// }
 function cs(state='0'){
     switch(state){
-        case 0:cd.children[0].style.display='none';cd.children[1].style.display='none';cd.children[2].style.display='none';break
-        case 1:cd.children[0].style.display='block';var res=document.getElementById('spacing').children[0];if(score>0){res.style.display='inline-block'}else{res.style.display='none'};cd.children[1].style.display='none';cd.children[2].style.display='none';break
-        case 2:cd.children[0].style.display='none';cd.children[1].style.display='block';cd.children[2].style.display='none';break
-        case 3:cd.children[0].style.display='none';cd.children[1].style.display='none';cd.children[2].style.display='block';userinput.focus();break
+        case 0:cd.children[0].style.display='none';cd.children[1].style.display='none';break
+        case 1:cd.children[0].style.display='block';var res=document.getElementById('spacing').children[0];if(score>0){res.style.display='inline-block'}else{res.style.display='none'};cd.children[1].style.display='none';break
+        case 2:cd.children[0].style.display='none';cd.children[1].style.display='block';break
     }
 }
 cs(1)
@@ -176,11 +201,15 @@ function nextShape(shape){
 function deletee(element){
     addEventListener("contextmenu",(e)=>{e.preventDefault()})
     if(window.confirm('do you wish to delet this record?')){
-        localStorage.removeItem(element.id)
-        localStorage.removeItem(`${element.id}line`)
-        localStorage.removeItem(`${element.id}level`)
-        localStorage.removeItem(`${element.id}score`)
         var usernumb=localStorage.getItem('usernumb')
+        localStorage.setItem(element.id,localStorage.getItem(`user${usernumb}`))
+        localStorage.setItem(`${element.id}line`,localStorage.getItem(`user${usernumb}line`))
+        localStorage.setItem(`${element.id}level`,localStorage.getItem(`user${usernumb}level`))
+        localStorage.setItem(`${element.id}score`,localStorage.getItem(`user${usernumb}score`))
+        localStorage.removeItem(`user${usernumb}`);
+        localStorage.removeItem(`user${usernumb}line`);
+        localStorage.removeItem(`user${usernumb}level`);
+        localStorage.removeItem(`user${usernumb}score`);
         usernumb--
         localStorage.setItem('usernumb',usernumb)
         listusers()
@@ -194,6 +223,20 @@ function addlevel(){
     }
 }
 
+let playmusic=true
+function music(){
+    var md=Array.prototype.slice.call(document.getElementsByClassName('Mstate'))
+    if(playmusic){
+        md.forEach(x=>x.innerHTML='off')
+        playmusic=false
+        audio.pause
+        
+    }else{
+        md.forEach(x=>x.innerHTML='on')
+        playmusic=true
+        audio.play
+    }
+}
 let newbuttons=document.getElementsByClassName('play')
 
 function Dabutton(){
@@ -211,7 +254,9 @@ function Dabutton(){
         nextShape(nextshape)
         buttondiscript.innerHTML='Next:';
         cs(0)
-        audio.play();
+        if(playmusic){
+            audio.play();
+        }
     }else{
         buttonbg.style.background='url(./Images/pause-button.png)'
         buttonbg.style.backgroundSize='170%'
@@ -267,7 +312,7 @@ function endgame(){
     newbuttons[0].innerHTML='New game'
     newbuttons[1].innerHTML='New game'
     audio.pause();
-    cs(3)
+    cs(2)
     recordscore()
 }
 
