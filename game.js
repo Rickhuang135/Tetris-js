@@ -8,7 +8,7 @@ for(var i=0;i<20;i++){
         var rows2=document.createElement('div')
         rows.appendChild(rows2);
         rows2.className=`column${j+1} empty`
-        rows2.style.backgroundColor='transparent'
+        rows2.style.background='transparent'
     }
 }
 let reset=true;
@@ -38,13 +38,13 @@ let linedisplay=document.getElementById('line');
 let color=undefined;
 function initialcolor(){
     switch(currentshape){
-        case 0:color='#00ffff';break
-        case 1:color='#FFD500';break
-        case 2:color='#800080';break
-        case 3:color='#FF971C';break
-        case 4:color="#0341AE";break
-        case 5:color="#FF3213";break
-        case 6:color='#72CB3B';break
+        case 0:color='url(./Images/aqua.png)';break
+        case 1:color='url(./Images/yellow.png)';break
+        case 2:color='url(./Images/purple.png)';break
+        case 3:color='url(./Images/orange.png)';break
+        case 4:color="url(./Images/blue.png)";break
+        case 5:color="url(./Images/red.png)";break
+        case 6:color='url(./Images/green.png)';break
     }
 }
 let nextcolor=undefined
@@ -60,7 +60,7 @@ for(var i=0;i<4;i++){
         var rows2=document.createElement('div')
         rows.appendChild(rows2);
         rows2.className=`column${j+1} empty`
-        rows2.style.backgroundColor='transparent'
+        rows2.style.background='transparent'
     }
 }
 let busy=false;
@@ -74,14 +74,6 @@ let rotatee=0
 let commit=false
 let scoreboard=document.getElementById('scoreboard')
 let userinput=document.getElementsByName('username')[0]
-
-// function ret(){
-//     if(reset==true&score>0){
-//         cs(2)
-//     }else{
-//         cs(1)
-//     }
-// }
 
 function clearscore(){
     while(scoreboard.childNodes.length>0){
@@ -158,14 +150,6 @@ function recordscore(){
 }
 
 cd=document.getElementById('cs')
-// function cs(state='0'){
-//     switch(state){
-//         case 0:cd.children[0].style.display='none';cd.children[1].style.display='none';cd.children[2].style.display='none';break
-//         case 1:cd.children[0].style.display='block';var res=document.getElementById('spacing').children[0];if(score>0){res.style.display='inline-block'}else{res.style.display='none'};cd.children[1].style.display='none';cd.children[2].style.display='none';break
-//         // case 2:cd.children[0].style.display='none';cd.children[1].style.display='block';cd.children[2].style.display='none';break
-//         case 3:cd.children[0].style.display='none';cd.children[1].style.display='none';cd.children[2].style.display='block';userinput.focus();break
-//     }
-// }
 function cs(state='0'){
     switch(state){
         case 0:cd.children[0].style.display='none';cd.children[1].style.display='none';break
@@ -179,21 +163,21 @@ function nextShape(shape){
     if(button.childNodes[1].childNodes!=undefined){
         for(let i=0;i<button.childNodes.length;i++){
             for(let j=0;j<button.childNodes[i].childNodes.length;j++){
-                button.childNodes[i].childNodes[j].style.backgroundColor='transparent'
+                button.childNodes[i].childNodes[j].style.background='transparent'
             }
         }
         let shapecoords=[]
         switch(shape){
-            case 0:shapecoords=[0,0,0,1,0,2,0,3];nextcolor='#00ffff';break
-            case 1:shapecoords=[0,0,0,1,1,0,1,1];nextcolor='#FFD500';break
-            case 2:shapecoords=[0,1,1,0,1,1,1,2];nextcolor='#800080';break
-            case 3:shapecoords=[0,0,1,0,1,1,1,2];nextcolor='#FF971C';break
-            case 4:shapecoords=[0,2,1,0,1,1,1,2];nextcolor="#0341AE";break
-            case 5:shapecoords=[0,1,0,2,1,0,1,1];nextcolor="#FF3213";break
-            case 6:shapecoords=[0,0,0,1,1,1,1,2];nextcolor='#72CB3B';break
+            case 0:shapecoords=[0,0,0,1,0,2,0,3];nextcolor='url(./Images/aqua.png)';break
+            case 1:shapecoords=[0,0,0,1,1,0,1,1];nextcolor='url(./Images/yellow.png)';break
+            case 2:shapecoords=[0,1,1,0,1,1,1,2];nextcolor='url(./Images/purple.png)';break
+            case 3:shapecoords=[0,0,1,0,1,1,1,2];nextcolor='url(./Images/orange.png)';break
+            case 4:shapecoords=[0,2,1,0,1,1,1,2];nextcolor="url(./Images/blue.png)";break
+            case 5:shapecoords=[0,1,0,2,1,0,1,1];nextcolor="url(./Images/red.png)";break
+            case 6:shapecoords=[0,0,0,1,1,1,1,2];nextcolor='url(./Images/green.png)';break
         }
         for(let i=1;i<shapecoords.length;i=i+2){
-            button.childNodes[shapecoords[i]].childNodes[shapecoords[i-1]].style.backgroundColor=nextcolor;
+            button.childNodes[shapecoords[i]].childNodes[shapecoords[i-1]].style.background=nextcolor;
         }
     }
 }
@@ -285,7 +269,7 @@ function confit(x){
 function resetboard(){
     for(var i=0;i<row.length;i++){
         for(var j=0;j<row[i].childNodes.length;j++){
-            row[i].childNodes[j].style.backgroundColor='transparent'
+            row[i].childNodes[j].style.background='transparent'
         }
     }
     score=0
@@ -319,7 +303,7 @@ function endgame(){
 function rowCheck(){
     let checkcount=0;
     for(var i=0;i<row[0].childNodes.length;i++){
-        if(row[0].childNodes[i].style.backgroundColor!='transparent'){
+        if(row[0].childNodes[i].style.background!='transparent'){
             endgame()
             break;
         }
@@ -328,7 +312,7 @@ function rowCheck(){
         var rooow=row[i].childNodes
         var execute=true
         for(var j=0;j<rooow.length;j++){
-            if(rooow[j].style.backgroundColor=='transparent'){
+            if(rooow[j].style.background=='transparent'){
                 execute=false
                 break;
             }
@@ -339,7 +323,7 @@ function rowCheck(){
             totalline++
             for(var j=0;j<rooow.length;j++){
                 for(var minus=0;i-minus>1;minus++){
-                    row[i-minus].childNodes[j].style.backgroundColor=row[i-1-minus].childNodes[j].style.backgroundColor;
+                    row[i-minus].childNodes[j].style.background=row[i-1-minus].childNodes[j].style.background;
                 }
             }
         }
@@ -366,10 +350,10 @@ function moveblock(x,y){
     }
     if(row[currentRow+x]!=undefined){
         if(row[currentRow+x].childNodes[ccolumn+y]!=undefined){
-            if(row[currentRow+x].childNodes[ccolumn+y].style.backgroundColor=='transparent'||WhereItWas.findIndex(un=>un==row[currentRow+x].childNodes[ccolumn+y])!=-1){
+            if(row[currentRow+x].childNodes[ccolumn+y].style.background=='transparent'||WhereItWas.findIndex(un=>un==row[currentRow+x].childNodes[ccolumn+y])!=-1){
                 if(commit==true){
                     WhereItWas.push(row[currentRow+x].childNodes[ccolumn+y])
-                    row[currentRow+x].childNodes[ccolumn+y].style.backgroundColor=color;
+                    row[currentRow+x].childNodes[ccolumn+y].style.background=color;
                 }
                 return true
             }else{
@@ -521,7 +505,7 @@ function shapedown(){
 
 function removeblock(){
     for(var i=0;i<WhereItWas.length;i++){
-        WhereItWas[i].style.backgroundColor='transparent'
+        WhereItWas[i].style.background='transparent'
     }
 }
 function checkright(){
