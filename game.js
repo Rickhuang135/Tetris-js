@@ -274,6 +274,7 @@ function resetboard(){
     }
     score=0
     line=0
+    linedisplay.innerHTML=line
     scoredisplay.innerHTML=score
     leveldisplay.innerHTML=level
     shapearray=selectshape()
@@ -321,6 +322,11 @@ function rowCheck(){
             checkcount++
             line++
             totalline++
+            linedisplay.innerHTML=totalline;
+            linedisplay.parentElement.style.backgroundColor='yellow'
+            setTimeout(function(){
+                linedisplay.parentElement.style.backgroundColor='transparent'
+            },500)
             for(var j=0;j<rooow.length;j++){
                 for(var minus=0;i-minus>1;minus++){
                     row[i-minus].childNodes[j].style.background=row[i-1-minus].childNodes[j].style.background;
@@ -338,9 +344,12 @@ function rowCheck(){
         line-=10;
         level++;
         leveldisplay.innerHTML=level;
+        leveldisplay.parentElement.style.backgroundColor='yellow'
+        setTimeout(function(){
+            leveldisplay.parentElement.style.backgroundColor='transparent'
+        },500)
     }
     scoredisplay.innerHTML=score;
-    linedisplay.innerHTML=totalline;
 }
 
 function moveblock(x,y){
