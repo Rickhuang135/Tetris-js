@@ -1,10 +1,10 @@
 let square120=document.getElementById('gameScreen');
 let audio=document.getElementById('Theme');
-for(var i=0;i<20;i++){
+for(var i=0;i<24;i++){
     var rows=document.createElement('div')
     rows.className=`row ${i+1}`
     square120.appendChild(rows);
-    for(var j=0;j<10;j++){
+    for(var j=0;j<12;j++){
         var rows2=document.createElement('div')
         rows.appendChild(rows2);
         rows2.className=`column${j+1} empty`
@@ -52,11 +52,11 @@ let leveldisplay=document.getElementById('levelin')
 let button=document.getElementById('buttonDisplay');
 let buttonbg=document.getElementById('button')
 button.style.display='none';
-for(var i=0;i<4;i++){
+for(var i=0;i<5;i++){
     var rows=document.createElement('div')
     rows.className=`Nrow${i+1}`
     button.appendChild(rows)
-    for(var j=0;j<4;j++){
+    for(var j=0;j<5;j++){
         var rows2=document.createElement('div')
         rows.appendChild(rows2);
         rows2.className=`column${j+1} empty`
