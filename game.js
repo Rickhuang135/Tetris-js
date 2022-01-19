@@ -36,17 +36,7 @@ let line=0;
 let totalline=0;
 let linedisplay=document.getElementById('line');
 let color=undefined;
-function initialcolor(){
-    switch(currentshape){
-        case 0:color='url(./Images/aqua.png)';break
-        case 1:color='url(./Images/yellow.png)';break
-        case 2:color='url(./Images/purple.png)';break
-        case 3:color='url(./Images/orange.png)';break
-        case 4:color="url(./Images/blue.png)";break
-        case 5:color="url(./Images/red.png)";break
-        case 6:color='url(./Images/green.png)';break
-    }
-}
+let initial=true
 let nextcolor=undefined
 let leveldisplay=document.getElementById('levelin')
 let button=document.getElementById('buttonDisplay');
@@ -65,8 +55,8 @@ for(var i=0;i<4;i++){
 }
 let busy=false;
 let row=document.getElementsByClassName("row");
-let currentRow=1;
-let ccolumn=5;
+let currentRow=0;
+let ccolumn=4;
 let pause=true
 let WhereItWas=[]
 let clean=true
@@ -159,6 +149,8 @@ function cs(state='0'){
 }
 cs(1)
 
+let nshapecoords=[]
+let shapecoords=[]
 function nextShape(shape){
     if(button.childNodes[1].childNodes!=undefined){
         for(let i=0;i<button.childNodes.length;i++){
@@ -166,18 +158,25 @@ function nextShape(shape){
                 button.childNodes[i].childNodes[j].style.background='transparent'
             }
         }
-        let shapecoords=[]
-        switch(shape){
-            case 0:shapecoords=[0,0,0,1,0,2,0,3];nextcolor='url(./Images/aqua.png)';break
-            case 1:shapecoords=[0,0,0,1,1,0,1,1];nextcolor='url(./Images/yellow.png)';break
-            case 2:shapecoords=[0,1,1,0,1,1,1,2];nextcolor='url(./Images/purple.png)';break
-            case 3:shapecoords=[0,0,1,0,1,1,1,2];nextcolor='url(./Images/orange.png)';break
-            case 4:shapecoords=[0,2,1,0,1,1,1,2];nextcolor="url(./Images/blue.png)";break
-            case 5:shapecoords=[0,1,0,2,1,0,1,1];nextcolor="url(./Images/red.png)";break
-            case 6:shapecoords=[0,0,0,1,1,1,1,2];nextcolor='url(./Images/green.png)';break
-        }
-        for(let i=1;i<shapecoords.length;i=i+2){
-            button.childNodes[shapecoords[i]].childNodes[shapecoords[i-1]].style.background=nextcolor;
+        if(initial){
+            initial=false
+            nextShape(currentshape)
+            color=nextcolor
+            nextShape(nextshape)
+        }else{
+            nshapecoords=[...shapecoords]
+            switch(shape){
+                case 0:shapecoords=[0,0,0,1,0,2,0,3,0,1,1,1,2,1,3,1,1,0,1,1,1,2,1,3,0,2,1,2,2,2,3,2];nextcolor='url(./Images/aqua.png)';break
+                case 1:shapecoords=[0,0,0,1,1,0,1,1,0,0,0,1,1,0,1,1,0,0,0,1,1,0,1,1,0,0,0,1,1,0,1,1];nextcolor='url(./Images/yellow.png)';break
+                case 2:shapecoords=[0,1,1,0,1,1,1,2,0,1,1,1,1,2,2,1,1,0,1,1,1,2,2,1,0,1,1,0,1,1,2,1];nextcolor='url(./Images/purple.png)';break
+                case 3:shapecoords=[0,0,1,0,1,1,1,2,0,1,1,1,2,1,0,2,1,0,1,1,1,2,2,2,2,0,0,1,1,1,2,1];nextcolor='url(./Images/orange.png)';break
+                case 4:shapecoords=[0,2,1,0,1,1,1,2,0,1,1,1,2,1,2,2,1,0,1,1,1,2,2,0,0,0,0,1,1,1,2,1];nextcolor="url(./Images/blue.png)";break
+                case 5:shapecoords=[0,1,0,2,1,0,1,1,0,1,1,1,1,2,2,2,1,1,1,2,2,0,2,1,0,0,1,0,1,1,2,1];nextcolor="url(./Images/red.png)";break
+                case 6:shapecoords=[0,0,0,1,1,1,1,2,0,2,1,1,1,2,2,1,1,0,1,1,2,1,2,2,0,1,1,0,1,1,2,0];nextcolor='url(./Images/green.png)';break
+            }
+            for(let i=1;i<8;i=i+2){
+                button.childNodes[shapecoords[i-1]].childNodes[shapecoords[i]].style.background=nextcolor;
+            }
         }
     }
 }
@@ -235,6 +234,7 @@ function Dabutton(){
         buttonbg.style.background='none'
         button.style.display='block';
         pause=false;
+        initial=true
         nextShape(nextshape)
         buttondiscript.innerHTML='Next:';
         cs(0)
@@ -277,13 +277,13 @@ function resetboard(){
     linedisplay.innerHTML=line
     scoredisplay.innerHTML=score
     leveldisplay.innerHTML=level
+    initial=true
     shapearray=selectshape()
     increment=1;
     currentshape=shapearray[0]
-    initialcolor()
     nextshape=shapearray[1]
-    currentRow=1;
-    ccolumn=5;
+    currentRow=0;
+    ccolumn=4;
 }
 
 function endgame(){
@@ -377,134 +377,17 @@ function moveblock(x,y){
 }
 
 function shapedown(){
-    var one=undefined
-    var two=undefined
-    var three=undefined
-    var four=undefined
-    var five=undefined
-    var six=undefined
-    var seven=undefined
-    var eight=undefined
-    if(currentshape==0){
-        if(rotatee==1){
-            one=-1;
-            five=1;
-            seven=2;
-            two=three=four=six=eight=0;
-        }else if(rotatee==3){
-            three=0;
-            five=1;
-            seven=2;
-            one=two=four=six=eight=-1;
-        }else if(rotatee==0){
-            four=1;
-            six=-1;
-            eight=-2;
-            one=two=three=five=seven=0;
-        }else if(rotatee==2){
-            two=0;
-            six=-1;
-            eight=-2;
-            one=three=four=five=seven=1;
-        }
-    }else if(currentshape==1){
-        one=two=three=six=-1;
-        four=five=seven=eight=0;
-    }else if(currentshape==2){
-        one=four=-1;
-        two=three=five=six=seven=0;
-        eight=1;
-        if(rotatee==1){
-            three=1;
-            four=0;
-        }else if(rotatee==2){
-            one=1;
-        }else if(rotatee==3){
-            seven=1;
-            eight=0;
-        }
-    }else if(currentshape==3){
-        five=six=0;
-        if(rotatee==0){
-            one=two=three=-1;
-            four=eight=0;
-            seven=1;
-        }else if(rotatee==1){
-            one=four=-1;
-            two=eight=1;
-            three=seven=0;
-        }else if(rotatee==2){
-            one=-1;
-            two=eight=0;
-            three=four=seven=1;
-        }else{
-            one=seven=0;
-            two=four=-1;
-            three=eight=1;
-        }
-    }else if(currentshape==4){
-        five=six=0;
-        if(rotatee==0){
-            one=three=-1;
-            four=eight=0;
-            seven=two=1;
-        }else if(rotatee==1){
-            four=-1;
-            eight=one=two=1;
-            three=seven=0;
-        }else if(rotatee==2){
-            one=four=-1;
-            two=eight=0;
-            seven=three=1;
-        }else{
-            one=seven=0;
-            two=four=three=-1;
-            eight=1;
-        }
-    }else if(currentshape==5){
-        three=four=0;
-        if(rotatee==0){
-            one=two=five=-1;
-            six=seven=0;
-            eight=1;
-        }else if(rotatee==1){
-            one=-1;
-            two=six=seven=1;
-            five=eight=0;
-        }else if(rotatee==2){
-            one=six=0;
-            two=-1;
-            five=seven=eight=1;
-        }else{
-            one=six=eight=-1;
-            two=five=0;
-            seven=1;
-        }
-    }else if(currentshape==6){
-        three=four=0;
-        if(rotatee==0){
-            one=five=eight=-1;
-            two=1;
-            six=seven=0;
-        }else if(rotatee==1){
-            one=-1;
-            two=five=0;
-            six=seven=eight=1;
-        }else if(rotatee==2){
-            one=eight=five=1;
-            two=-1;
-            six=seven=0;
-        }else{
-            one=two=six=-1;
-            five=eight=0;
-            seven=1;
-        }
-    }
     let moveAray=[];
-    moveAray.push(moveblock(one,two))
-    moveAray.push(moveblock(three,four))
-    moveAray.push(moveblock(five,six))
-    moveAray.push(moveblock(seven,eight))
+    console.log(nshapecoords)
+    var initial=1
+    switch(rotatee){
+        case 1: initial=9;break;
+        case 2: initial=17;break;
+        case 3: initial=25;break
+    }
+    for(let i=initial;i<initial+7;i=i+2){
+        moveAray.push(moveblock(nshapecoords[i-1],nshapecoords[i]));
+    }
     busy=false
     if(moveAray.findIndex(x=>x==false)!=-1){
         return false
@@ -575,8 +458,8 @@ function shape(key='not important'){
             shapedown()
             pause=true;
             clean=false;
-            currentRow=1;
-            ccolumn=5;
+            currentRow=0;
+            ccolumn=4;
             rotatee=0;
             currentshape=nextshape;
             color=nextcolor;

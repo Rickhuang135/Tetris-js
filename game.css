@@ -119,7 +119,7 @@ ol li div span{
 .empty{
     height: 27px;
     width: 27px;
-    border: black 1px solid;
+    border: grey 1px solid;
 }
 .row{
     border:none;
@@ -180,8 +180,8 @@ ol li div span{
 
 #button{
     display: block;
-    height: 100px;
-    width: 100px;
+    height: 108px;
+    width: 108px;
     border: transparent;
     background-image:url(./Images/playbutton.png);
     background-size:130%;
@@ -193,7 +193,7 @@ ol li div span{
     width: 100px;
 }
 #buttonDisplay div{
-    height:24px;
+    height:27px;
     border:transparent 0.5px;
     display:flex;
 }
