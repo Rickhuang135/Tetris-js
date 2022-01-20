@@ -243,7 +243,7 @@ function Dabutton(){
         nextShape(nextshape)
         buttondiscript.innerHTML='Next:';
         cs(0)
-        if(playmusic){
+        if(playmusic==true){
             audio.play();
         }
     }else{
