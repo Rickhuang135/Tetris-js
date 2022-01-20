@@ -206,20 +206,25 @@ function addlevel(){
     }
 }
 
-let playmusic=true
+let playmusic=localStorage.getItem('music')
 function music(){
     var md=Array.prototype.slice.call(document.getElementsByClassName('Mstate'))
-    if(playmusic){
+    console.log(typeof(playmusic))
+    if(playmusic=='true'||playmusic==true){
         md.forEach(x=>x.innerHTML='off')
         playmusic=false
-        audio.pause
-        
+        localStorage.setItem('music',true)
     }else{
         md.forEach(x=>x.innerHTML='on')
         playmusic=true
-        audio.play
+        localStorage.setItem('music',false)
     }
 }
+if(playmusic==undefined){
+    localStorage.setItem('music',false)
+    playmusic=false
+}
+music()
 let newbuttons=document.getElementsByClassName('play')
 
 function Dabutton(){
@@ -378,7 +383,6 @@ function moveblock(x,y){
 
 function shapedown(){
     let moveAray=[];
-    console.log(nshapecoords)
     var initial=1
     switch(rotatee){
         case 1: initial=9;break;
@@ -517,7 +521,7 @@ document.addEventListener('visibilitychange',function(){
 })
 document.body.onkeyup=function(e){
     if(reset==false){
-        if(e.keyCode==32){
+        if(e.keyCode==32||e.keyCode==27){
             Dabutton()
         }
     }
