@@ -8,6 +8,7 @@ body{
     background-repeat: no-repeat;
     overflow-x: scroll;
     overflow-y: hidden;
+    background-color: rgb(60,192,198);
 }
 button{
     background-color: #cccccc;
@@ -181,12 +182,12 @@ ol li div span{
 
 #button{
     display: block;
-    height: 100px;
-    width: 100px;
+    height: 135px;
+    width: 135px;
     border: transparent;
     background-image:url(./Images/playbutton.png);
-    background-size:130%;
-    background-position: center;
+    background-size:100%;
+    background-position: left;
     bottom:0;
 }
 #buttonDsiaply{
@@ -194,7 +195,7 @@ ol li div span{
     width: 100px;
 }
 #buttonDisplay div{
-    height:24px;
+    height:27px;
     border:transparent 0.5px;
     display:flex;
 }
