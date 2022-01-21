@@ -15,10 +15,10 @@ let reset=true;
 let score=0;
 let scoredisplay=document.getElementById('changer')
 let buttondiscript=document.getElementById('nextword')
-let shapearray=[0,1,2,3,4,5,6]
+let shapearray=[0,1,2,3,4,5,6,7,8,9,10,11,12,13]
 function selectshape(){
     let randomarray=[]
-    for(var i=0;randomarray.length<7;i++){
+    for(var i=0;randomarray.length<14;i++){
         var random=Math.floor(Math.random()*shapearray.length)
         var transfer=shapearray[shapearray.length-1]
         shapearray[shapearray.length-1]=shapearray[random]
@@ -166,15 +166,22 @@ function nextShape(shape){
         }else{
             nshapecoords=[...shapecoords]
             switch(shape){
-                case 0:shapecoords=[0,0,0,1,0,2,0,3,0,1,1,1,2,1,3,1,1,0,1,1,1,2,1,3,0,2,1,2,2,2,3,2];nextcolor='url(./Images/aqua.png)';break
-                case 1:shapecoords=[0,0,0,1,1,0,1,1,0,0,0,1,1,0,1,1,0,0,0,1,1,0,1,1,0,0,0,1,1,0,1,1];nextcolor='url(./Images/yellow.png)';break
-                case 2:shapecoords=[0,1,1,0,1,1,1,2,0,1,1,1,1,2,2,1,1,0,1,1,1,2,2,1,0,1,1,0,1,1,2,1];nextcolor='url(./Images/purple.png)';break
-                case 3:shapecoords=[0,0,1,0,1,1,1,2,0,1,1,1,2,1,0,2,1,0,1,1,1,2,2,2,2,0,0,1,1,1,2,1];nextcolor='url(./Images/orange.png)';break
-                case 4:shapecoords=[0,2,1,0,1,1,1,2,0,1,1,1,2,1,2,2,1,0,1,1,1,2,2,0,0,0,0,1,1,1,2,1];nextcolor="url(./Images/blue.png)";break
-                case 5:shapecoords=[0,1,0,2,1,0,1,1,0,1,1,1,1,2,2,2,1,1,1,2,2,0,2,1,0,0,1,0,1,1,2,1];nextcolor="url(./Images/red.png)";break
-                case 6:shapecoords=[0,0,0,1,1,1,1,2,0,2,1,1,1,2,2,1,1,0,1,1,2,1,2,2,0,1,1,0,1,1,2,0];nextcolor='url(./Images/green.png)';break
+                case 0:shapecoords=[0,0,1,0,1,1,1,2,0,2,0,1,0,2,1,1,2,1,2,2,1,0,1,1,1,2,2,0,2,2,0,0,0,1,1,1,2,1,2,0];nextcolor='url(./Images/aqua.png)';break;
+                case 1:shapecoords=[0,1,1,0,1,1,1,2,2,1,0,1,1,0,1,1,1,2,2,1,0,1,1,0,1,1,1,2,2,1,0,1,1,0,1,1,1,2,2,1];nextcolor='url(./Images/blue.png)';break;
+                case 2:shapecoords=[0,0,0,1,1,0,1,1,1,2,0,1,0,2,1,1,1,2,2,1,1,0,1,1,1,2,2,1,2,2,0,1,1,0,1,1,2,0,2,1];nextcolor='url(./Images/green.png)';break;
+                case 3:shapecoords=[0,1,0,2,1,0,1,1,1,2,0,1,1,1,1,2,2,1,2,2,1,0,1,1,1,2,2,0,2,1,0,0,0,1,1,0,1,1,2,1];nextcolor='url(./Images/orange.png)';break;
+                case 4:shapecoords=[0,0,1,0,1,1,1,2,1,3,0,1,0,2,1,1,2,1,3,1,1,-1,1,0,1,1,1,2,2,2,-1,1,0,1,1,1,2,1,2,0];nextcolor='url(./Images/red.png)';break;
+                case 5:shapecoords=[1,0,1,1,1,2,1,3,2,0,0,0,0,1,1,1,2,1,3,1,0,2,1,-1,1,0,1,1,1,2,-1,1,0,1,1,1,2,1,2,2];nextcolor='url(./Images/yellow.png)';break;
+                case 6:shapecoords=[0,1,1,0,1,1,1,2,1,3,0,1,1,1,1,2,2,1,3,1,1,-1,1,0,1,1,1,2,2,1,-1,1,0,1,1,0,1,1,2,1];nextcolor='url(./Images/purple.png)';break;
+                case 7:shapecoords=[1,0,1,1,1,2,1,3,2,1,0,1,1,0,1,1,2,1,3,1,0,1,1,-1,1,0,1,1,1,2,-1,1,0,1,1,1,1,2,2,1];nextcolor='url(./Images/brown.png)';break;
+                case 8:shapecoords=[1,0,1,1,1,2,1,3,1,4,-1,2,0,2,1,2,2,2,3,2,1,0,1,1,1,2,1,3,1,4,-1,2,0,2,1,2,2,2,3,2];nextcolor='url(./Images/Lime.png)';break;
+                case 9:shapecoords=[0,0,1,0,2,0,2,1,2,2,0,0,0,1,0,2,1,0,2,0,0,0,0,1,0,2,1,2,2,2,0,2,1,2,2,2,2,0,2,1];nextcolor='url(./Images/pink.png)';break;
+                case 10:shapecoords=[0,1,0,2,1,1,2,0,2,1,0,0,1,0,1,1,1,2,2,2,0,1,0,2,1,1,2,0,2,1,0,0,1,0,1,1,1,2,2,2];nextcolor='url(./Images/silver.png)';break;
+                case 11:shapecoords=[0,0,0,1,1,1,2,1,2,2,0,2,1,0,1,1,1,2,2,0,0,0,0,1,1,1,2,1,2,2,0,2,1,0,1,1,1,2,2,0];nextcolor='url(./Images/Diorite.png)';break;
+                case 12:shapecoords=[0,0,0,1,1,1,1,2,2,1,0,2,1,0,1,1,1,2,2,1,0,1,1,0,1,1,2,1,2,2,0,1,1,0,1,1,1,2,2,0];nextcolor='url(./Images/granite.png)';break;
+                case 13:shapecoords=[0,1,0,2,1,0,1,1,2,1,0,1,1,0,1,1,1,2,2,2,0,1,1,1,1,2,2,0,2,1,0,0,1,0,1,1,1,2,2,1];nextcolor='url(./Images/aqua.png)';break;
             }
-            for(let i=1;i<8;i=i+2){
+            for(let i=1;i<10;i=i+2){
                 button.childNodes[shapecoords[i-1]].childNodes[shapecoords[i]].style.background=nextcolor;
             }
         }
@@ -209,14 +216,11 @@ function addlevel(){
 let playmusic=localStorage.getItem('music')
 function music(){
     var md=Array.prototype.slice.call(document.getElementsByClassName('Mstate'))
-    console.log(typeof(playmusic))
     if(playmusic=='true'||playmusic==true){
-        console.log('?')
         md.forEach(x=>x.innerHTML='off')
         playmusic=false
         localStorage.setItem('music',true)
     }else{
-        console.log('!')
         md.forEach(x=>x.innerHTML='on')
         playmusic=true
         localStorage.setItem('music',false)
@@ -226,7 +230,6 @@ if(playmusic==undefined){
     localStorage.setItem('music',false)
     playmusic=false
 }
-console.log(playmusic)
 music()
 let newbuttons=document.getElementsByClassName('play')
 
@@ -347,6 +350,7 @@ function rowCheck(){
         case 2:score=score+300*(level+1);break;
         case 3:score=score+500*(level+1);break;
         case 4:score=score+800*(level+1);break;
+        case 5:score=score+1600*(level+1);break;
     }
     if(line>=10){
         line-=10;
@@ -388,11 +392,11 @@ function shapedown(){
     let moveAray=[];
     var initial=1
     switch(rotatee){
-        case 1: initial=9;break;
-        case 2: initial=17;break;
-        case 3: initial=25;break
+        case 1: initial=11;break;
+        case 2: initial=21;break;
+        case 3: initial=31;break
     }
-    for(let i=initial;i<initial+7;i=i+2){
+    for(let i=initial;i<initial+9;i=i+2){
         moveAray.push(moveblock(nshapecoords[i-1],nshapecoords[i]));
     }
     busy=false
@@ -471,7 +475,7 @@ function shape(key='not important'){
             currentshape=nextshape;
             color=nextcolor;
             increment++
-            if(increment==7){
+            if(increment==14){
                 shapearray=selectshape()
                 increment=0
             }
@@ -499,7 +503,7 @@ function down(){
 
 document.addEventListener("keydown",function(event){
     console.log(event.key)
-    if(pause==false){
+    if(pause==false&reset==false){
         if(event.key=='ArrowLeft'){
             shape('leftkey')
         }
