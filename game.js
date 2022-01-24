@@ -209,7 +209,6 @@ function addlevel(){
 let playmusic=localStorage.getItem('music')
 function music(){
     var md=Array.prototype.slice.call(document.getElementsByClassName('Mstate'))
-    console.log(typeof(playmusic))
     if(playmusic=='true'||playmusic==true){
         md.forEach(x=>x.innerHTML='off')
         playmusic=false
@@ -445,6 +444,9 @@ function shape(key='not important'){
                 if(checkright()==false){
                     if(checkleft()==false){
                         rotatee--
+                        if(rotatee==-1){
+                            rotatee=3
+                        }
                     }
                 }
             }
@@ -495,7 +497,6 @@ function down(){
 }
 
 document.addEventListener("keydown",function(event){
-    console.log(event.key)
     if(pause==false){
         if(event.key=='ArrowLeft'){
             shape('leftkey')
