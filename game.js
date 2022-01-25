@@ -15,10 +15,10 @@ let reset=true;
 let score=0;
 let scoredisplay=document.getElementById('changer')
 let buttondiscript=document.getElementById('nextword')
-let shapearray=[0,1,2,3,4,5,6,7,8,9,10,11,12,13]
+let shapearray=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]
 function selectshape(){
     let randomarray=[]
-    for(var i=0;randomarray.length<14;i++){
+    for(var i=0;randomarray.length<18;i++){
         var random=Math.floor(Math.random()*shapearray.length)
         var transfer=shapearray[shapearray.length-1]
         shapearray[shapearray.length-1]=shapearray[random]
@@ -36,6 +36,8 @@ let line=0;
 let totalline=0;
 let linedisplay=document.getElementById('line');
 let color=undefined;
+let nxcolor=false
+let xcolor=false
 let initial=true
 let nextcolor=undefined
 let leveldisplay=document.getElementById('levelin')
@@ -165,6 +167,8 @@ function nextShape(shape){
             nextShape(nextshape)
         }else{
             nshapecoords=[...shapecoords]
+            nxcolor=xcolor
+            xcolor=false
             switch(shape){
                 case 0:shapecoords=[0,0,1,0,1,1,1,2,0,2,0,1,0,2,1,1,2,1,2,2,1,0,1,1,1,2,2,0,2,2,0,0,0,1,1,1,2,1,2,0];nextcolor='url(./Images/aqua.png)';break;
                 case 1:shapecoords=[0,1,1,0,1,1,1,2,2,1,0,1,1,0,1,1,1,2,2,1,0,1,1,0,1,1,1,2,2,1,0,1,1,0,1,1,1,2,2,1];nextcolor='url(./Images/blue.png)';break;
@@ -179,11 +183,24 @@ function nextShape(shape){
                 case 10:shapecoords=[0,1,0,2,1,1,2,0,2,1,0,0,1,0,1,1,1,2,2,2,0,1,0,2,1,1,2,0,2,1,0,0,1,0,1,1,1,2,2,2];nextcolor='url(./Images/silver.png)';break;
                 case 11:shapecoords=[0,0,0,1,1,1,2,1,2,2,0,2,1,0,1,1,1,2,2,0,0,0,0,1,1,1,2,1,2,2,0,2,1,0,1,1,1,2,2,0];nextcolor='url(./Images/Diorite.png)';break;
                 case 12:shapecoords=[0,0,0,1,1,1,1,2,2,1,0,2,1,0,1,1,1,2,2,1,0,1,1,0,1,1,2,1,2,2,0,1,1,0,1,1,1,2,2,0];nextcolor='url(./Images/granite.png)';break;
-                case 13:shapecoords=[0,1,0,2,1,0,1,1,2,1,0,1,1,0,1,1,1,2,2,2,0,1,1,1,1,2,2,0,2,1,0,0,1,0,1,1,1,2,2,1];nextcolor='url(./Images/aqua.png)';break;
+                case 13:shapecoords=[0,1,0,2,1,0,1,1,2,1,0,1,1,0,1,1,1,2,2,2,0,1,1,1,1,2,2,0,2,1,0,0,1,0,1,1,1,2,2,1];nextcolor='url(./Images/andesite.png)';break;
+                case 14:shapecoords=[0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0];nextcolor='url(./Images/TNT.png)';xcolor='url(./Images/TN2.png)';break
+                case 15:shapecoords=[0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0];nextcolor='url(./Images/TNT.png)';xcolor='url(./Images/TN2.png)';break
+                case 16:shapecoords=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];nextcolor='url(./Images/G.png)';break
+                case 17:shapecoords=[1,0,1,1,1,2,1,3,1,4,-1,2,0,2,1,2,2,2,3,2,1,0,1,1,1,2,1,3,1,4,-1,2,0,2,1,2,2,2,3,2];nextcolor='url(./Images/Lime.png)';break;
             }
+            var storecolor=nextcolor;
             for(let i=1;i<10;i=i+2){
                 button.childNodes[shapecoords[i-1]].childNodes[shapecoords[i]].style.background=nextcolor;
+                if(xcolor!=false){
+                    if(nextcolor==storecolor){
+                        nextcolor=xcolor
+                    }else{
+                        nextcolor=storecolor
+                    }
+                }
             }
+            nextcolor=storecolor
         }
     }
 }
@@ -285,7 +302,8 @@ function resetboard(){
     }
     score=0
     line=0
-    linedisplay.innerHTML=line
+    totalline=0
+    linedisplay.innerHTML=totalline
     scoredisplay.innerHTML=score
     leveldisplay.innerHTML=level
     initial=true
@@ -316,15 +334,17 @@ function rowCheck(){
     let checkcount=0;
     for(var i=0;i<row[0].childNodes.length;i++){
         if(row[0].childNodes[i].style.background!='transparent'){
-            endgame()
-            break;
+            if(row[0].childNodes[i].style.background!='bc1'){
+                endgame()
+                break;
+            }
         }
     }
     for(var i=1;i<row.length;i++){
         var rooow=row[i].childNodes
         var execute=true
         for(var j=0;j<rooow.length;j++){
-            if(rooow[j].style.background=='transparent'){
+            if(rooow[j].style.background=='transparent'||rooow[j].style.background=='bc2'||rooow[j].style.background=='bc5'||rooow[j].style.background=='bc8'){
                 execute=false
                 break;
             }
@@ -372,7 +392,7 @@ function moveblock(x,y){
     if(row[currentRow+x]!=undefined){
         if(row[currentRow+x].childNodes[ccolumn+y]!=undefined){
             if(row[currentRow+x].childNodes[ccolumn+y].style.background=='transparent'||WhereItWas.findIndex(un=>un==row[currentRow+x].childNodes[ccolumn+y])!=-1){
-                if(commit==true){
+                if(commit){
                     WhereItWas.push(row[currentRow+x].childNodes[ccolumn+y])
                     row[currentRow+x].childNodes[ccolumn+y].style.background=color;
                 }
@@ -391,6 +411,7 @@ function moveblock(x,y){
 function shapedown(){
     let moveAray=[];
     var initial=1
+    var storecolor=color;
     switch(rotatee){
         case 1: initial=11;break;
         case 2: initial=21;break;
@@ -398,7 +419,15 @@ function shapedown(){
     }
     for(let i=initial;i<initial+9;i=i+2){
         moveAray.push(moveblock(nshapecoords[i-1],nshapecoords[i]));
+        if(nxcolor!=false){
+            if(color==storecolor){
+                color=nxcolor
+            }else{
+                color=storecolor
+            }
+        }
     }
+    color=storecolor;
     busy=false
     if(moveAray.findIndex(x=>x==false)!=-1){
         return false
@@ -411,6 +440,45 @@ function removeblock(){
         WhereItWas[i].style.background='transparent'
     }
 }
+
+function G(){
+    for(var i=0;i<24;i++){
+        if(row[i].childNodes[ccolumn].style.background=='transparent'){
+            var miner=1
+            for(var j=0;i-j-miner>0;j++){
+                while(row[i-j-miner].childNodes[ccolumn].style.background=='transparent'&i-miner-j>0){
+                    miner++
+                }
+                row[i-j].childNodes[ccolumn].style.background=row[i-miner-j].childNodes[ccolumn].style.background;
+            }
+        }
+    }
+}
+function TNT(background='blow'){
+    var da=[]
+    var b=0
+    for(var i=0;i<3;i++){
+        if(row[currentRow+i]!=undefined){
+            for(var j=-1;j<2;j++){
+                if(row[currentRow+i].childNodes[ccolumn+j]!=undefined){
+                    b++
+                    background=`url(./Images/bc${b}.png)`
+                    row[currentRow+i].childNodes[ccolumn+j].style.background=background
+                    row[currentRow+i].childNodes[ccolumn+j].style.border='transparent'
+                    row[currentRow+i].childNodes[ccolumn+j].style.borderRight='transparent 0.5px'
+                    row[currentRow+i].childNodes[ccolumn+j].style.borderBottom='transparent 0.5px'
+                    da.push(row[currentRow+i].childNodes[ccolumn+j])
+                }else{
+                    b++
+                }
+            }
+        }else{
+            b+=3
+        }
+    }
+    setTimeout(()=>{for(var i=0;i<da.length;i++){da[i].style.background='transparent';da[i].style.borderRight='grey solid 0.5px';da[i].style.borderBottom='grey solid 0.5px'}},1000)
+}
+
 function checkright(){
     ccolumn++
     if(shapedown()==false){
@@ -452,6 +520,9 @@ function shape(key='not important'){
                 if(checkright()==false){
                     if(checkleft()==false){
                         rotatee--
+                        if(rotatee==-1){
+                            rotatee=3
+                        }
                     }
                 }
             }
@@ -469,13 +540,20 @@ function shape(key='not important'){
             shapedown()
             pause=true;
             clean=false;
+            if(currentshape==14||currentshape==15){
+                nxcolor=false
+                TNT('blow')
+            }else if(currentshape==16){
+                G()
+            }
             currentRow=0;
             ccolumn=4;
             rotatee=0;
             currentshape=nextshape;
             color=nextcolor;
+            nxcolor=xcolor;
             increment++
-            if(increment==14){
+            if(increment==18){
                 shapearray=selectshape()
                 increment=0
             }
@@ -502,7 +580,7 @@ function down(){
 }
 
 document.addEventListener("keydown",function(event){
-    console.log(event.key)
+    // console.log(event.key)
     if(pause==false&reset==false){
         if(event.key=='ArrowLeft'){
             shape('leftkey')
