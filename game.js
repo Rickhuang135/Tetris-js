@@ -1,3 +1,46 @@
+class piece{
+    constructor(coo,col,excol="none"){
+        this.coords=coo
+        this.color=col;
+        this.extra=excol
+    }
+}
+const s1=new piece([1,0,1,1,1,2,1,3,1,4,-1,2,0,2,1,2,2,2,3,2,1,0,1,1,1,2,1,3,1,4,-1,2,0,2,1,2,2,2,3,2],'url(./Images/Lime.png)')
+//line
+const s2=new piece([0,1,1,0,1,1,1,2,2,1,0,1,1,0,1,1,1,2,2,1,0,1,1,0,1,1,1,2,2,1,0,1,1,0,1,1,1,2,2,1],'url(./Images/blue.png)')
+//cross
+const s3=new piece([0,0,1,0,1,1,1,2,0,2,0,1,0,2,1,1,2,1,2,2,1,0,1,1,1,2,2,0,2,2,0,0,0,1,1,1,2,1,2,0],'url(./Images/aqua.png)')
+//C
+const s4=new piece([0,0,1,0,2,0,2,1,2,2,0,0,0,1,0,2,1,0,2,0,0,0,0,1,0,2,1,2,2,2,0,2,1,2,2,2,2,0,2,1],'url(./Images/pink.png)')
+//equal L
+const s5=new piece([0,1,0,2,1,1,2,0,2,1,0,0,1,0,1,1,1,2,2,2,0,1,0,2,1,1,2,0,2,1,0,0,1,0,1,1,1,2,2,2],'url(./Images/silver.png)')
+//equal S
+const s6=new piece([0,0,0,1,1,1,2,1,2,2,0,2,1,0,1,1,1,2,2,0,0,0,0,1,1,1,2,1,2,2,0,2,1,0,1,1,1,2,2,0],'url(./Images/Diorite.png)')
+//equal Z
+const s7=new piece([0,0,0,1,0,2,1,1,2,1,0,2,1,0,1,1,1,2,2,2,0,1,1,1,2,0,2,1,2,2,0,0,1,0,1,1,1,2,2,0],'url(./Images/Diorite.png)')
+//equal T
+const s8=new piece([0,0,0,1,1,0,1,1,1,2,0,1,0,2,1,1,1,2,2,1,1,0,1,1,1,2,2,1,2,2,0,1,1,0,1,1,2,0,2,1],'url(./Images/green.png)')
+//square right
+const s9=new piece([0,1,0,2,1,0,1,1,1,2,0,1,1,1,1,2,2,1,2,2,1,0,1,1,1,2,2,0,2,1,0,0,0,1,1,0,1,1,2,1],'url(./Images/orange.png)')
+//square left
+const s10=new piece([1,0,1,1,1,2,1,3,2,0,0,0,0,1,1,1,2,1,3,1,0,2,1,-1,1,0,1,1,1,2,-1,1,0,1,1,1,2,1,2,2],'url(./Images/yellow.png)')
+//L right short
+const s11=new piece([1,0,1,1,1,2,1,3,2,0,0,0,0,1,1,1,2,1,3,1,0,2,1,-1,1,0,1,1,1,2,-1,1,0,1,1,1,2,1,2,2],'url(./Images/red.png)')
+//L left short
+const s12=new piece([0,1,1,0,1,1,1,2,1,3,0,1,1,1,1,2,2,1,3,1,1,-1,1,0,1,1,1,2,2,1,-1,1,0,1,1,0,1,1,2,1],'url(./Images/purple.png)')
+//T right short
+const s13=new piece([1,0,1,1,1,2,1,3,2,1,0,1,1,0,1,1,2,1,3,1,0,1,1,-1,1,0,1,1,1,2,-1,1,0,1,1,1,1,2,2,1],'url(./Images/brown.png)')
+//T left short
+const s14=new piece([1,1,1,2,1,3,2,0,2,1,0,0,1,0,1,1,2,1,3,1,0,1,0,2,1,-1,1,0,1,1,-1,1,0,1,1,1,1,2,2,2],'url(./Images/purple.png)')
+//disfigured S
+const s15=new piece([0,0,0,1,1,1,1,2,1,3,0,2,1,1,1,2,2,1,3,1,1,-1,1,0,1,1,2,1,2,2,-1,1,0,1,1,0,1,1,2,0],'url(./Images/brown.png)')
+//disfigured Z
+const s16=new piece([0,0,0,1,1,1,1,2,2,1,0,2,1,0,1,1,1,2,2,1,0,1,1,0,1,1,2,1,2,2,0,1,1,0,1,1,1,2,2,0],'url(./Images/granite.png)')
+//下
+const s17=new piece([0,1,0,2,1,0,1,1,2,1,0,1,1,0,1,1,1,2,2,2,0,1,1,1,1,2,2,0,2,1,0,0,1,0,1,1,1,2,2,1],'url(./Images/andesite.png)')
+//上
+const Newton=new piece([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],'url(./Images/G.png)')
+const Bomb=new piece([0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0],'url(./Images/TNT.png)','url(./Images/TN2.png)')
 let square120=document.getElementById('gameScreen');
 let audio=document.getElementById('Theme');
 for(var i=0;i<24;i++){
