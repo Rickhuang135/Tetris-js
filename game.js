@@ -58,10 +58,10 @@ let reset=true;
 let score=0;
 let scoredisplay=document.getElementById('changer')
 let buttondiscript=document.getElementById('nextword')
-let shapearray=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]
+let shapearray=[s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13,s14,s15,s16,s17]
 function selectshape(){
     let randomarray=[]
-    for(var i=0;randomarray.length<18;i++){
+    for(var i=0;randomarray.length<17;i++){
         var random=Math.floor(Math.random()*shapearray.length)
         var transfer=shapearray[shapearray.length-1]
         shapearray[shapearray.length-1]=shapearray[random]
@@ -71,7 +71,12 @@ function selectshape(){
     return randomarray
 }
 shapearray=selectshape()
-let increment=1;
+let game={
+    now:shapearray[0],
+    next:shapearray[1],
+    after:shapearray[2],
+}
+let increment=3;
 let nextshape=shapearray[increment]
 let currentshape=shapearray[0]
 let level=0;
@@ -79,9 +84,6 @@ let line=0;
 let totalline=0;
 let linedisplay=document.getElementById('line');
 let color=undefined;
-let nxcolor=false
-let xcolor=false
-let initial=true
 let nextcolor=undefined
 let leveldisplay=document.getElementById('levelin')
 let button=document.getElementById('buttonDisplay');
@@ -194,56 +196,26 @@ function cs(state='0'){
 }
 cs(1)
 
-let nshapecoords=[]
-let shapecoords=[]
-function nextShape(shape){
+function initialize(){
+    
+}
+function nextShape(){
     if(button.childNodes[1].childNodes!=undefined){
         for(let i=0;i<button.childNodes.length;i++){
             for(let j=0;j<button.childNodes[i].childNodes.length;j++){
                 button.childNodes[i].childNodes[j].style.background='transparent'
             }
         }
-        if(initial){
-            initial=false
-            nextShape(currentshape)
-            color=nextcolor
-            nextShape(nextshape)
-        }else{
-            nshapecoords=[...shapecoords]
-            nxcolor=xcolor
-            xcolor=false
-            switch(shape){
-                case 0:shapecoords=[0,0,1,0,1,1,1,2,0,2,0,1,0,2,1,1,2,1,2,2,1,0,1,1,1,2,2,0,2,2,0,0,0,1,1,1,2,1,2,0];nextcolor='url(./Images/aqua.png)';break;
-                case 1:shapecoords=[0,1,1,0,1,1,1,2,2,1,0,1,1,0,1,1,1,2,2,1,0,1,1,0,1,1,1,2,2,1,0,1,1,0,1,1,1,2,2,1];nextcolor='url(./Images/blue.png)';break;
-                case 2:shapecoords=[0,0,0,1,1,0,1,1,1,2,0,1,0,2,1,1,1,2,2,1,1,0,1,1,1,2,2,1,2,2,0,1,1,0,1,1,2,0,2,1];nextcolor='url(./Images/green.png)';break;
-                case 3:shapecoords=[0,1,0,2,1,0,1,1,1,2,0,1,1,1,1,2,2,1,2,2,1,0,1,1,1,2,2,0,2,1,0,0,0,1,1,0,1,1,2,1];nextcolor='url(./Images/orange.png)';break;
-                case 4:shapecoords=[0,0,1,0,1,1,1,2,1,3,0,1,0,2,1,1,2,1,3,1,1,-1,1,0,1,1,1,2,2,2,-1,1,0,1,1,1,2,1,2,0];nextcolor='url(./Images/red.png)';break;
-                case 5:shapecoords=[1,0,1,1,1,2,1,3,2,0,0,0,0,1,1,1,2,1,3,1,0,2,1,-1,1,0,1,1,1,2,-1,1,0,1,1,1,2,1,2,2];nextcolor='url(./Images/yellow.png)';break;
-                case 6:shapecoords=[0,1,1,0,1,1,1,2,1,3,0,1,1,1,1,2,2,1,3,1,1,-1,1,0,1,1,1,2,2,1,-1,1,0,1,1,0,1,1,2,1];nextcolor='url(./Images/purple.png)';break;
-                case 7:shapecoords=[1,0,1,1,1,2,1,3,2,1,0,1,1,0,1,1,2,1,3,1,0,1,1,-1,1,0,1,1,1,2,-1,1,0,1,1,1,1,2,2,1];nextcolor='url(./Images/brown.png)';break;
-                case 8:shapecoords=[1,0,1,1,1,2,1,3,1,4,-1,2,0,2,1,2,2,2,3,2,1,0,1,1,1,2,1,3,1,4,-1,2,0,2,1,2,2,2,3,2];nextcolor='url(./Images/Lime.png)';break;
-                case 9:shapecoords=[0,0,1,0,2,0,2,1,2,2,0,0,0,1,0,2,1,0,2,0,0,0,0,1,0,2,1,2,2,2,0,2,1,2,2,2,2,0,2,1];nextcolor='url(./Images/pink.png)';break;
-                case 10:shapecoords=[0,1,0,2,1,1,2,0,2,1,0,0,1,0,1,1,1,2,2,2,0,1,0,2,1,1,2,0,2,1,0,0,1,0,1,1,1,2,2,2];nextcolor='url(./Images/silver.png)';break;
-                case 11:shapecoords=[0,0,0,1,1,1,2,1,2,2,0,2,1,0,1,1,1,2,2,0,0,0,0,1,1,1,2,1,2,2,0,2,1,0,1,1,1,2,2,0];nextcolor='url(./Images/Diorite.png)';break;
-                case 12:shapecoords=[0,0,0,1,1,1,1,2,2,1,0,2,1,0,1,1,1,2,2,1,0,1,1,0,1,1,2,1,2,2,0,1,1,0,1,1,1,2,2,0];nextcolor='url(./Images/granite.png)';break;
-                case 13:shapecoords=[0,1,0,2,1,0,1,1,2,1,0,1,1,0,1,1,1,2,2,2,0,1,1,1,1,2,2,0,2,1,0,0,1,0,1,1,1,2,2,1];nextcolor='url(./Images/andesite.png)';break;
-                case 14:shapecoords=[0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0];nextcolor='url(./Images/TNT.png)';xcolor='url(./Images/TN2.png)';break
-                case 15:shapecoords=[0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0];nextcolor='url(./Images/TNT.png)';xcolor='url(./Images/TN2.png)';break
-                case 16:shapecoords=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];nextcolor='url(./Images/G.png)';break
-                case 17:shapecoords=[1,0,1,1,1,2,1,3,1,4,-1,2,0,2,1,2,2,2,3,2,1,0,1,1,1,2,1,3,1,4,-1,2,0,2,1,2,2,2,3,2];nextcolor='url(./Images/Lime.png)';break;
-            }
-            var storecolor=nextcolor;
-            for(let i=1;i<10;i=i+2){
-                button.childNodes[shapecoords[i-1]].childNodes[shapecoords[i]].style.background=nextcolor;
-                if(xcolor!=false){
-                    if(nextcolor==storecolor){
-                        nextcolor=xcolor
-                    }else{
-                        nextcolor=storecolor
-                    }
+        var storecolor=game.next.color;
+        for(let i=1;i<10;i=i+2){
+            button.childNodes[game.next.coords[i-1]].childNodes[game.next.coords[i]].style.background=storecolor;
+            if(game.next.extra!="none"){
+                if(storecolor==game.next.color){
+                    storecolor=game.next.extra
+                }else{
+                    storecolor=game.next.color
                 }
             }
-            nextcolor=storecolor
         }
     }
 }
@@ -351,9 +323,10 @@ function resetboard(){
     leveldisplay.innerHTML=level
     initial=true
     shapearray=selectshape()
-    increment=1;
-    currentshape=shapearray[0]
-    nextshape=shapearray[1]
+    increment=3;
+    game.now=shapearray[0]
+    game.next=shapearray[1]
+    game.after=shapearray[2]
     currentRow=0;
     ccolumn=4;
 }
@@ -437,7 +410,7 @@ function moveblock(x,y){
             if(row[currentRow+x].childNodes[ccolumn+y].style.background=='transparent'||WhereItWas.findIndex(un=>un==row[currentRow+x].childNodes[ccolumn+y])!=-1){
                 if(commit){
                     WhereItWas.push(row[currentRow+x].childNodes[ccolumn+y])
-                    row[currentRow+x].childNodes[ccolumn+y].style.background=color;
+                    row[currentRow+x].childNodes[ccolumn+y].style.background=game.now.color;
                 }
                 return true
             }else{
@@ -452,25 +425,25 @@ function moveblock(x,y){
 }
 
 function shapedown(){
+    var storecolor=game.now.color;
     let moveAray=[];
     var initial=1
-    var storecolor=color;
     switch(rotatee){
         case 1: initial=11;break;
         case 2: initial=21;break;
         case 3: initial=31;break
     }
     for(let i=initial;i<initial+9;i=i+2){
-        moveAray.push(moveblock(nshapecoords[i-1],nshapecoords[i]));
-        if(nxcolor!=false){
-            if(color==storecolor){
-                color=nxcolor
+        moveAray.push(moveblock(game.now.coords[i-1],game.now.coords[i]));
+        if(game.now.extra!="none"){
+            if(game.now.color==storecolor){
+                game.now.color=game.now.extra
             }else{
-                color=storecolor
+                game.now.color=storecolor
             }
         }
     }
-    color=storecolor;
+    game.now.color=storecolor;
     busy=false
     if(moveAray.findIndex(x=>x==false)!=-1){
         return false
@@ -583,20 +556,19 @@ function shape(key='not important'){
             shapedown()
             pause=true;
             clean=false;
-            if(currentshape==14||currentshape==15){
-                nxcolor=false
+            if(game.now==Bomb){
                 TNT('blow')
-            }else if(currentshape==16){
+            }else if(game.now==Newton){
                 G()
             }
             currentRow=0;
             ccolumn=4;
             rotatee=0;
-            currentshape=nextshape;
-            color=nextcolor;
-            nxcolor=xcolor;
+            game.now=game.next;
+            game.next=game.after;
+            game.after=shapearray[increment]
             increment++
-            if(increment==18){
+            if(increment==17){
                 shapearray=selectshape()
                 increment=0
             }
