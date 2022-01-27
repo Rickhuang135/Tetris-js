@@ -15,7 +15,7 @@ button{
 }
 ol{
     overflow-y: scroll;
-    height: 360px;
+    height: 300px;
     margin: 0;
 }
 ol li div{
@@ -23,6 +23,24 @@ ol li div{
     display: flex;
     justify-content: space-between;
     width: 300px;
+}
+h3{
+    margin: 0;
+    text-align: left;
+    font-size: 1.8em;
+}
+h3 span{
+    font-size:25px;
+    float: right;
+}
+#Tools div{
+    display: flex;
+    min-height: 30px;
+}
+#Tools div img{
+    margin-right: 5px;
+    height:30px;
+    width:30px;
 }
 .button{
     height: 60px;
@@ -188,11 +206,11 @@ ol li div span{
     background-position: left;
     bottom:0;
 }
-#buttonDsiaply{
-    height:100px;
-    width: 100px;
+#buttonDsiaply, #nutton{
+    height:135px;
+    width: 135px;
 }
-#buttonDisplay div{
+#buttonDisplay div, #nutton div{
     height:27px;
     border:transparent 0.5px;
     display:flex;
@@ -204,6 +222,5 @@ ol li div span{
 #levelup{
     float: right;
     background-color: #cccccc;
-    display: inline-block;
     border-radius: 4px;
 }

@@ -25,7 +25,7 @@ const s9=new piece([0,1,0,2,1,0,1,1,1,2,0,1,1,1,1,2,2,1,2,2,1,0,1,1,1,2,2,0,2,1,
 //square left
 const s10=new piece([1,0,1,1,1,2,1,3,2,0,0,0,0,1,1,1,2,1,3,1,0,2,1,-1,1,0,1,1,1,2,-1,1,0,1,1,1,2,1,2,2],'url(./Images/yellow.png)')
 //L right short
-const s11=new piece([1,0,1,1,1,2,1,3,2,0,0,0,0,1,1,1,2,1,3,1,0,2,1,-1,1,0,1,1,1,2,-1,1,0,1,1,1,2,1,2,2],'url(./Images/red.png)')
+const s11=new piece([0,0,1,0,1,1,1,2,1,3,0,1,0,2,1,1,2,1,3,1,1,-1,1,0,1,1,1,2,2,2,-1,1,0,1,1,1,2,1,2,0],'url(./Images/red.png)')
 //L left short
 const s12=new piece([0,1,1,0,1,1,1,2,1,3,0,1,1,1,1,2,2,1,3,1,1,-1,1,0,1,1,1,2,2,1,-1,1,0,1,1,0,1,1,2,1],'url(./Images/purple.png)')
 //T right short
@@ -40,7 +40,9 @@ const s16=new piece([0,0,0,1,1,1,1,2,2,1,0,2,1,0,1,1,1,2,2,1,0,1,1,0,1,1,2,1,2,2
 const s17=new piece([0,1,0,2,1,0,1,1,2,1,0,1,1,0,1,1,1,2,2,2,0,1,1,1,1,2,2,0,2,1,0,0,1,0,1,1,1,2,2,1],'url(./Images/andesite.png)')
 //上
 const Newton=new piece([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],'url(./Images/G.png)')
+//Newton
 const Bomb=new piece([0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0],'url(./Images/TNT.png)','url(./Images/TN2.png)')
+//nobel
 let square120=document.getElementById('gameScreen');
 let audio=document.getElementById('Theme');
 for(var i=0;i<24;i++){
@@ -77,29 +79,30 @@ let game={
     after:shapearray[2],
 }
 let increment=3;
-let nextshape=shapearray[increment]
-let currentshape=shapearray[0]
 let level=0;
 let line=0;
 let totalline=0;
 let linedisplay=document.getElementById('line');
-let color=undefined;
-let nextcolor=undefined
 let leveldisplay=document.getElementById('levelin')
+let nutton=document.getElementById('nutton')
 let button=document.getElementById('buttonDisplay');
 let buttonbg=document.getElementById('button')
 button.style.display='none';
-for(var i=0;i<5;i++){
-    var rows=document.createElement('div')
-    rows.className=`Nrow${i+1}`
-    button.appendChild(rows)
-    for(var j=0;j<5;j++){
-        var rows2=document.createElement('div')
-        rows.appendChild(rows2);
-        rows2.className=`column${j+1} empty`
-        rows2.style.background='transparent'
+function createdisplay(element){
+    for(var i=0;i<5;i++){
+        var rows=document.createElement('div')
+        rows.className=`Nrow${i+1}`
+        element.appendChild(rows)
+        for(var j=0;j<5;j++){
+            var rows2=document.createElement('div')
+            rows.appendChild(rows2);
+            rows2.className=`column${j+1} empty`
+            rows2.style.background='transparent'
+        }
     }
 }
+createdisplay(button)
+createdisplay(nutton)
 let busy=false;
 let row=document.getElementsByClassName("row");
 let currentRow=0;
@@ -111,6 +114,8 @@ let rotatee=0
 let commit=false
 let scoreboard=document.getElementById('scoreboard')
 let userinput=document.getElementsByName('username')[0]
+let miss=5
+let newt=3
 
 function clearscore(){
     while(scoreboard.childNodes.length>0){
@@ -196,9 +201,6 @@ function cs(state='0'){
 }
 cs(1)
 
-function initialize(){
-    
-}
 function nextShape(){
     if(button.childNodes[1].childNodes!=undefined){
         for(let i=0;i<button.childNodes.length;i++){
@@ -218,7 +220,51 @@ function nextShape(){
             }
         }
     }
+    if(nutton.childNodes[1].childNodes!=undefined){
+        for(let i=0;i<nutton.childNodes.length;i++){
+            for(let j=0;j<nutton.childNodes[i].childNodes.length;j++){
+                nutton.childNodes[i].childNodes[j].style.background='transparent'
+            }
+        }
+        var storecolor=game.after.color;
+        for(let i=1;i<10;i=i+2){
+            nutton.childNodes[game.after.coords[i-1]].childNodes[game.after.coords[i]].style.background=storecolor;
+            if(game.after.extra!="none"){
+                if(storecolor==game.after.color){
+                    storecolor=game.after.extra
+                }else{
+                    storecolor=game.after.color
+                }
+            }
+        }
+    }
 }
+
+function Tools(){
+    let tool=Array.prototype.slice.call(document.getElementById('Tools').getElementsByTagName('div'))
+    for(i=0;i<5;i++){
+        while(tool[i].children[0]!=undefined){
+            tool[i].removeChild(tool[i].children[0])
+        }
+    }
+    listsupplies("G",tool[0],newt,6)
+    listsupplies("TNT",tool[1],miss,10)
+    listsupplies("TN2",tool[2],miss,10)
+    if(miss>10){
+        listsupplies("TNT",tool[3],miss-10,20)
+        listsupplies("TN2",tool[4],miss-10,20)
+    }
+}
+
+function listsupplies(img,arnumb,limit,lim2){
+    for(var i=0;i<limit&i<lim2;i++){
+        let pics=document.createElement('img')
+        pics.src=`./Images/${img}.png`
+        arnumb.appendChild(pics)
+    }
+}
+
+Tools()
 
 function deletee(element){
     addEventListener("contextmenu",(e)=>{e.preventDefault()})
@@ -278,17 +324,17 @@ function Dabutton(){
         button.style.display='block';
         pause=false;
         initial=true
-        nextShape(nextshape)
+        nextShape()
         buttondiscript.innerHTML='Next:';
         cs(0)
         if(playmusic==true){
             audio.play();
         }
     }else{
-        buttonbg.style.background='url(./Images/pause-button.png)'
-        buttonbg.style.backgroundSize='170%'
-        buttonbg.style.backgroundPosition='center'
-        button.style.display='none'
+        // buttonbg.style.background='url(./Images/pause-button.png)'
+        // buttonbg.style.backgroundSize='170%'
+        // buttonbg.style.backgroundPosition='center'
+        // button.style.display='none'
         buttondiscript.innerHTML='Paused'
         pause=true;
         audio.pause();
@@ -315,6 +361,9 @@ function resetboard(){
             row[i].childNodes[j].style.background='transparent'
         }
     }
+    newt=3
+    miss=5
+    Tools()
     score=0
     line=0
     totalline=0
@@ -392,6 +441,15 @@ function rowCheck(){
         line-=10;
         level++;
         leveldisplay.innerHTML=level;
+        miss+=3
+        newt+=2
+        Tools()
+        if(newt>6){
+            newt=6
+        }
+        if(miss>15){
+            miss=15
+        }
         leveldisplay.parentElement.style.backgroundColor='yellow'
         setTimeout(function(){
             leveldisplay.parentElement.style.backgroundColor='transparent'
@@ -572,8 +630,7 @@ function shape(key='not important'){
                 shapearray=selectshape()
                 increment=0
             }
-            nextshape=shapearray[increment]
-            nextShape(nextshape)
+            nextShape()
             rowCheck();
             shapedown();
             setTimeout(function(){if(reset==false){pause=false}},down,(518-19*(level+1))*500/480);
@@ -608,6 +665,32 @@ document.addEventListener("keydown",function(event){
         }
         if(event.key=='ArrowUp'){
             shape('upkey')
+        }
+        if(event.key=='m'){
+            if(miss>0){
+                miss--
+                Tools()
+                game.after=game.next
+                increment--
+                if(increment<0){
+                    increment=0
+                }
+                game.next=Bomb
+                nextShape()
+            }
+        }
+        if(event.key=='n'){
+            if(newt>0){
+                newt--
+                Tools()
+                game.after=game.next
+                increment--
+                if(increment<0){
+                    increment=0
+                }
+                game.next=Newton
+                nextShape()
+            }
         }
     }
 })
