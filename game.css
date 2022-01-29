@@ -63,17 +63,19 @@ h3 span{
     padding: 5px;
     border-radius: 4px;
 }
-.button:hover, #levelup:hover, .sbutton:hover, .tbutton:hover, .active{
+.button:hover, #levelup:hover, .tbutton:hover, .active{
     background-color: grey;
     color: white;
 }
 #cs{
+    background:rgba(255, 255, 255, 95%);
     position: absolute;
-    height: 280px;
-    width: 260px;
-    transform: translate(15%,-220%);
+    height: 500px;
+    width: 280px;
+    transform: translate(10%,-120%);
     z-index:999;
     text-align: center;
+    border-radius: 10px;
 }
 h4{
     margin: 0;
@@ -85,9 +87,6 @@ h4{
     font-weight: 1000;
     text-shadow:grey 3px 2px;
     text-align: center;
-}
-#setup2{
-    display: none;
 }
 #setup2{
     display: none;
@@ -112,6 +111,16 @@ h4{
     height: 50px;
     width: 90px;
     border: transparent;
+}
+#yes{
+    background-color:rgb(30, 209, 30);
+    color: white;
+}
+#no:hover{
+    background:red
+}
+#yes:hover{
+    border:black 3px solid;
 }
 .reset{
     display: none;
@@ -159,8 +168,8 @@ ol li div span{
     border-collapse: collapse;
 }
 #leftpannel{
-    margin-right: 10px;
     background: rgba(255, 255, 255, 80%);
+    margin-right: 10px;
     display: inline-block;
     min-width: 340px;
     padding: 10px;

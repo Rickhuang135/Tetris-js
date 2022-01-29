@@ -21,9 +21,9 @@
         </div>
         <ol id='scoreboard'></ol>
         <div id="Tools">
-            <h3>Newtons:<span>press N</span></h3>
+            <h3>Newtons:<span>press F</span></h3>
             <div></div>
-            <h3>Missles:<span>press M</span></h3>
+            <h3>Missles:<span>press D</span></h3>
             <div></div>
             <div></div>
             <div></div>
@@ -48,8 +48,8 @@
                 <label for="username"><strong>please enter your username here</strong></label>
                 <input type="text" placeholder="null" name="username" onkeyup=recordscore()>
                 <div id='confit'>
-                    <button class='sbutton' onclick=confit(this)>confirm</button>
-                    <button class='sbutton' onclick=confit(this)>cancel</button>
+                    <button class='sbutton' id="yes" onclick=confit(this)>confirm</button>
+                    <button class='sbutton' id="no" onclick=confit(this)>cancel</button>
                 </div>
                 <button class='sb button' onclick=music()>Music:<span class='Mstate'>on</span></button>
                 <br>

@@ -114,7 +114,7 @@ let rotatee=0
 let commit=false
 let scoreboard=document.getElementById('scoreboard')
 let userinput=document.getElementsByName('username')[0]
-let miss=5
+let miss=8
 let newt=3
 
 function clearscore(){
@@ -176,6 +176,7 @@ function listusers(){
 
 var element=undefined
 function recordscore(){
+    userinput.focus()
     if(element==undefined){
         var recitem=document.createElement('li')
         recitem.id='temporec'
@@ -194,9 +195,9 @@ function recordscore(){
 cd=document.getElementById('cs')
 function cs(state='0'){
     switch(state){
-        case 0:cd.children[0].style.display='none';cd.children[1].style.display='none';break
-        case 1:cd.children[0].style.display='block';var res=document.getElementById('spacing').children[0];if(score>0){res.style.display='inline-block'}else{res.style.display='none'};cd.children[1].style.display='none';break
-        case 2:cd.children[0].style.display='none';cd.children[1].style.display='block';break
+        case 0:cd.children[0].style.display='none';cd.children[1].style.display='none';cd.style.background='transparent';break
+        case 1:cd.children[0].style.display='block';var res=document.getElementById('spacing').children[0];if(score>0){res.style.display='inline-block'}else{res.style.display='none'};cd.children[1].style.display='none';cd.style.background='rgba(255, 255, 255, 90%)';break
+        case 2:cd.children[0].style.display='none';cd.children[1].style.display='block';cd.style.background='rgba(255, 255, 255, 90%)';break
     }
 }
 cs(1)
@@ -362,7 +363,7 @@ function resetboard(){
         }
     }
     newt=3
-    miss=5
+    miss=8
     Tools()
     score=0
     line=0
@@ -441,7 +442,7 @@ function rowCheck(){
         line-=10;
         level++;
         leveldisplay.innerHTML=level;
-        miss+=3
+        miss+=4
         newt+=2
         Tools()
         if(newt>6){
@@ -652,7 +653,7 @@ function down(){
 }
 
 document.addEventListener("keydown",function(event){
-    // console.log(event.key)
+    console.log(event.key)
     if(pause==false&reset==false){
         if(event.key=='ArrowLeft'){
             shape('leftkey')
@@ -666,7 +667,7 @@ document.addEventListener("keydown",function(event){
         if(event.key=='ArrowUp'){
             shape('upkey')
         }
-        if(event.key=='m'){
+        if(event.key=='d'){
             if(miss>0){
                 miss--
                 Tools()
@@ -679,7 +680,7 @@ document.addEventListener("keydown",function(event){
                 nextShape()
             }
         }
-        if(event.key=='n'){
+        if(event.key=='f'){
             if(newt>0){
                 newt--
                 Tools()
@@ -692,6 +693,8 @@ document.addEventListener("keydown",function(event){
                 nextShape()
             }
         }
+    }else if(event.key=='Enter'){
+        confit(document.getElementById('yes'))
     }
 })
 document.addEventListener('visibilitychange',function(){
@@ -699,7 +702,6 @@ document.addEventListener('visibilitychange',function(){
         if(pause){
             pause=false
         }
-        Dabutton()
     }
 })
 document.body.onkeyup=function(e){
