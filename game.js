@@ -344,16 +344,18 @@ function Dabutton(){
 }
 
 function confit(x){
-    recordscore()
-    if(x.innerHTML=='cancel'){
-        element.remove()
-    }else{
-        listusers()
+    if(score>0){
+        recordscore()
+        if(x.innerHTML=='cancel'){
+            element.remove()
+        }else{
+            listusers()
+        }
+        score=0
+        leveldisplay.innerHTML=level
+        cs(1)
+        element=undefined
     }
-    score=0
-    leveldisplay.innerHTML=level
-    cs(1)
-    element=undefined
 }
 
 function resetboard(){
@@ -693,14 +695,16 @@ document.addEventListener("keydown",function(event){
                 nextShape()
             }
         }
-    }else if(event.key=='Enter'){
-        confit(document.getElementById('yes'))
+    }else if(reset){
+        if(event.key=='Enter'){
+            confit(document.getElementById('yes'))
+        }
     }
 })
 document.addEventListener('visibilitychange',function(){
     if(reset==false){
-        if(pause){
-            pause=false
+        if(pause==false){
+            Dabutton()
         }
     }
 })
