@@ -194,10 +194,11 @@ function recordscore(){
 
 cd=document.getElementById('cs')
 function cs(state='0'){
+    const hitbox=document.getElementById('hitbox')
     switch(state){
-        case 0:cd.children[0].style.display='none';cd.children[1].style.display='none';cd.style.background='transparent';break
-        case 1:cd.children[0].style.display='block';var res=document.getElementById('spacing').children[0];if(score>0){res.style.display='inline-block'}else{res.style.display='none'};cd.children[1].style.display='none';cd.style.background='rgba(255, 255, 255, 90%)';break
-        case 2:cd.children[0].style.display='none';cd.children[1].style.display='block';cd.style.background='rgba(255, 255, 255, 90%)';break
+        case 0:cd.children[0].style.display='none';cd.children[1].style.display='none';cd.style.background='transparent';hitbox.style.display="block";break
+        case 1:cd.children[0].style.display='block';var res=document.getElementById('spacing').children[0];hitbox.style.display="none";if(score>0){res.style.display='inline-block'}else{res.style.display='none'};cd.children[1].style.display='none';cd.style.background='rgba(255, 255, 255, 90%)';break
+        case 2:cd.children[0].style.display='none';cd.children[1].style.display='block';hitbox.style.display="none";cd.style.background='rgba(255, 255, 255, 90%)';break
     }
 }
 cs(1)
@@ -434,11 +435,11 @@ function rowCheck(){
         }
     }
     switch(checkcount){
-        case 1:score=score+100*(level+1);break;
-        case 2:score=score+300*(level+1);break;
-        case 3:score=score+500*(level+1);break;
-        case 4:score=score+800*(level+1);break;
-        case 5:score=score+1600*(level+1);break;
+        case 1:addscore(100*(level+1));break;
+        case 2:addscore(300*(level+1));break;
+        case 3:addscore(500*(level+1));break;
+        case 4:addscore(800*(level+1));break;
+        case 5:addscore(1600*(level+1));break;
     }
     if(line>=10){
         line-=10;
@@ -574,21 +575,25 @@ function checkleft(){
     return true
 }
 
-function shape(key='not important'){
+function addscore(amount){
+    score+=amount;
+    scoredisplay.innerHTML=score;
+}
+
+function shape(move='not important'){
     if(clean==true&pause==false&reset==false){
         removeblock()
         WhereItWas=[]
-        if(key=='downkey'){
+        if(move=='down'){
             busy=true;
             currentRow++;
             if(shapedown()==false){
                 currentRow--
             }else{
-                score++
-                scoredisplay.innerHTML=score;
+                addscore(1)
             }
         }
-        if(key=='upkey'){
+        if(move=='up'){
             if(rotatee==3){
                 rotatee=-1
             }
@@ -604,10 +609,10 @@ function shape(key='not important'){
                 }
             }
         }
-        if(key=='Rightkey'){
+        if(move=='right'){
             checkright()
         }
-        if(key=='leftkey'){
+        if(move=='left'){
             checkleft()
         }
         commit=true;
@@ -658,16 +663,16 @@ document.addEventListener("keydown",function(event){
     console.log(event.key)
     if(pause==false&reset==false){
         if(event.key=='ArrowLeft'){
-            shape('leftkey')
+            shape('left')
         }
         if(event.key=='ArrowRight'){
-            shape('Rightkey')
+            shape('right')
         }
         if(event.key=='ArrowDown'){
-            shape('downkey')
+            shape('down')
         }
         if(event.key=='ArrowUp'){
-            shape('upkey')
+            shape('up')
         }
         if(event.key=='d'){
             if(miss>0){
@@ -700,6 +705,49 @@ document.addEventListener("keydown",function(event){
             confit(document.getElementById('yes'))
         }
     }
+})
+
+let slash=[]
+let splash=[]
+document.getElementById('hitbox').addEventListener('touchmove',function(wtf){
+    wtf.preventDefault()
+    r=true
+    if(slash.length>20){
+        slash.shift()
+    }
+    if(splash.length>20){
+        splash.shift()
+    }
+    let compare=slash[0]-slash[slash.length-1]
+    if(Math.abs(compare)>20&pause==false&reset==false){
+        slash=[]
+        if(compare>0){
+            shape('left')
+        }else if(compare<0){
+            shape('right')
+        }
+    }
+    compare=splash[0]-splash[splash.length-1]
+    if(compare<0&compare<-40){
+        while(splash.length>5){
+            splash.shift()
+        }
+        shape('down')
+        addscore(1)
+    }
+    slash.push(Math.round(wtf.touches[0].clientX))
+    splash.push(Math.round(wtf.touches[0].clientY))
+})
+let r
+document.getElementById('hitbox').addEventListener('touchstart',function(){
+    r=false
+})
+document.getElementById('hitbox').addEventListener('touchend',function(){
+    if(r==false){
+        shape('up')
+    }
+    splash=[]
+    slash=[]
 })
 document.addEventListener('visibilitychange',function(){
     if(reset==false){

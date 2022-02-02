@@ -145,6 +145,13 @@ ol li div span{
     margin: 0;
     margin-right:10px ;
 }
+#hitbox{
+    height: 650px;
+    width: 323px;
+    background:transparent;
+    transform:translateY(-100%);
+    z-index: 990;
+}
 .empty{
     height: 27px;
     width: 27px;
