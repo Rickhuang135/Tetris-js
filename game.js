@@ -5,6 +5,27 @@ class piece{
         this.extra=excol
     }
 }
+class spiece{
+    constructor(coo,col,excol="none",amo){
+        this.coords=coo
+        this.color=col;
+        this.extra=excol;
+        this.amount=amo;
+    }
+    que(){
+        if(this.amount>0){
+            this.amount--
+            Tools()
+            game.after=game.next
+            increment--
+            if(increment<0){
+                increment=0
+            }
+            game.next=this
+            nextShape()
+        }
+    }
+}
 const s1=new piece([1,0,1,1,1,2,1,3,1,4,-1,2,0,2,1,2,2,2,3,2,1,0,1,1,1,2,1,3,1,4,-1,2,0,2,1,2,2,2,3,2],'url(./Images/Lime.png)')
 //line
 const s2=new piece([0,1,1,0,1,1,1,2,2,1,0,1,1,0,1,1,1,2,2,1,0,1,1,0,1,1,1,2,2,1,0,1,1,0,1,1,1,2,2,1],'url(./Images/blue.png)')
@@ -39,9 +60,9 @@ const s16=new piece([0,0,0,1,1,1,1,2,2,1,0,2,1,0,1,1,1,2,2,1,0,1,1,0,1,1,2,1,2,2
 //下
 const s17=new piece([0,1,0,2,1,0,1,1,2,1,0,1,1,0,1,1,1,2,2,2,0,1,1,1,1,2,2,0,2,1,0,0,1,0,1,1,1,2,2,1],'url(./Images/andesite.png)')
 //上
-const Newton=new piece([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],'url(./Images/G.png)')
+const Newton=new spiece([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],'url(./Images/G.png)',"none",3)
 //Newton
-const Bomb=new piece([0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0],'url(./Images/TNT.png)','url(./Images/TN2.png)')
+const Bomb=new spiece([0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0],'url(./Images/TNT.png)','url(./Images/TN2.png)',8)
 //nobel
 let square120=document.getElementById('gameScreen');
 let audio=document.getElementById('Theme');
@@ -114,8 +135,6 @@ let rotatee=0
 let commit=false
 let scoreboard=document.getElementById('scoreboard')
 let userinput=document.getElementsByName('username')[0]
-let miss=8
-let newt=3
 
 function clearscore(){
     while(scoreboard.childNodes.length>0){
@@ -249,12 +268,12 @@ function Tools(){
             tool[i].removeChild(tool[i].children[0])
         }
     }
-    listsupplies("G",tool[0],newt,6)
-    listsupplies("TNT",tool[1],miss,10)
-    listsupplies("TN2",tool[2],miss,10)
-    if(miss>10){
-        listsupplies("TNT",tool[3],miss-10,20)
-        listsupplies("TN2",tool[4],miss-10,20)
+    listsupplies("G",tool[0],Newton.amount,6)
+    listsupplies("TNT",tool[1],Bomb.amount,10)
+    listsupplies("TN2",tool[2],Bomb.amount,10)
+    if(Bomb.amount>10){
+        listsupplies("TNT",tool[3],Bomb.amount-10,20)
+        listsupplies("TN2",tool[4],Bomb.amount-10,20)
     }
 }
 
@@ -365,8 +384,8 @@ function resetboard(){
             row[i].childNodes[j].style.background='transparent'
         }
     }
-    newt=3
-    miss=8
+    Newton.amount=3;
+    Bomb.amount=8;
     Tools()
     score=0
     line=0
@@ -445,15 +464,15 @@ function rowCheck(){
         line-=10;
         level++;
         leveldisplay.innerHTML=level;
-        miss+=4
-        newt+=2
+        Bomb.amount+=4
+        Newton.amount+=2
+        if(Newton.amount>6){
+            Newton.amount=6
+        }
+        if(Bomb.amount>15){
+            Bomb.amount=15
+        }
         Tools()
-        if(newt>6){
-            newt=6
-        }
-        if(miss>15){
-            miss=15
-        }
         leveldisplay.parentElement.style.backgroundColor='yellow'
         setTimeout(function(){
             leveldisplay.parentElement.style.backgroundColor='transparent'
@@ -675,30 +694,10 @@ document.addEventListener("keydown",function(event){
             shape('up')
         }
         if(event.key=='d'){
-            if(miss>0){
-                miss--
-                Tools()
-                game.after=game.next
-                increment--
-                if(increment<0){
-                    increment=0
-                }
-                game.next=Bomb
-                nextShape()
-            }
+            Bomb.que()
         }
         if(event.key=='f'){
-            if(newt>0){
-                newt--
-                Tools()
-                game.after=game.next
-                increment--
-                if(increment<0){
-                    increment=0
-                }
-                game.next=Newton
-                nextShape()
-            }
+            Newton.que()
         }
     }else if(reset){
         if(event.key=='Enter'){
@@ -733,16 +732,17 @@ document.getElementById('hitbox').addEventListener('touchmove',function(wtf){
             splash.shift()
         }
         shape('down')
-        addscore(1)
     }
     slash.push(Math.round(wtf.touches[0].clientX))
     splash.push(Math.round(wtf.touches[0].clientY))
 })
 let r
-document.getElementById('hitbox').addEventListener('touchstart',function(){
+document.getElementById('hitbox').addEventListener('touchstart',function(wtf){
+    wtf.preventDefault()
     r=false
 })
-document.getElementById('hitbox').addEventListener('touchend',function(){
+document.getElementById('hitbox').addEventListener('touchend',function(wtf){
+    wtf.preventDefault()
     if(r==false){
         shape('up')
     }

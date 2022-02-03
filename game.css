@@ -180,6 +180,7 @@ ol li div span{
     display: inline-block;
     min-width: 340px;
     padding: 10px;
+    height:640px;;
     text-align: center;
 }
 #leftpannel h2{
@@ -207,6 +208,7 @@ ol li div span{
     margin-right: 100px;
     display: inline-block;
     width: 100px;
+    height: 660px;
     padding-right:50px;
     padding-left:50px;
     text-align: center;
