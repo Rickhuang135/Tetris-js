@@ -1,14 +1,30 @@
 
 body{
-    display: flex;
     justify-content: center;
     box-sizing: border-box;
     background-image: url(./Images/background2.jpg);
     background-size: 100%;
     background-repeat: no-repeat;
     overflow-x: scroll;
+    height: 100vh;
     overflow-y: hidden;
+    min-width:951px;
     background-color: rgb(60,192,198);
+}
+footer{
+    bottom: 0;
+    position: fixed;
+    width: 100%;
+    text-align: center;
+    height: 12%;
+    opacity: 90%;
+    overflow-y: scroll;
+}
+#sbody{
+    display: flex;
+}
+img{
+    margin: 0;
 }
 button{
     background-color: #cccccc;
@@ -32,6 +48,9 @@ h3{
 h3 span{
     font-size:25px;
     float: right;
+}
+#Tools{
+    background:rgba(255, 255, 255, 30%);
 }
 #Tools div{
     display: flex;
@@ -205,7 +224,6 @@ ol li div span{
 #rightpannel{
     background: rgba(255, 255, 255, 80%);
     margin-left: 5px;
-    margin-right: 100px;
     display: inline-block;
     width: 100px;
     height: 660px;

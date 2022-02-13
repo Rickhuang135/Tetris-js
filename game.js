@@ -13,16 +13,18 @@ class spiece{
         this.amount=amo;
     }
     que(){
-        if(this.amount>0){
-            this.amount--
-            Tools()
-            game.after=game.next
-            increment--
-            if(increment<0){
-                increment=0
+        if(pause==false){
+            if(this.amount>0){
+                this.amount--
+                Tools()
+                game.after=game.next
+                increment--
+                if(increment<0){
+                    increment=0
+                }
+                game.next=this
+                nextShape()
             }
-            game.next=this
-            nextShape()
         }
     }
 }
@@ -261,6 +263,7 @@ function nextShape(){
     }
 }
 
+let slotcap=10;
 function Tools(){
     let tool=Array.prototype.slice.call(document.getElementById('Tools').getElementsByTagName('div'))
     for(i=0;i<5;i++){
@@ -269,9 +272,9 @@ function Tools(){
         }
     }
     listsupplies("G",tool[0],Newton.amount,6)
-    listsupplies("TNT",tool[1],Bomb.amount,10)
-    listsupplies("TN2",tool[2],Bomb.amount,10)
-    if(Bomb.amount>10){
+    listsupplies("TNT",tool[1],Bomb.amount,slotcap)
+    listsupplies("TN2",tool[2],Bomb.amount,slotcap)
+    if(Bomb.amount>slotcap){
         listsupplies("TNT",tool[3],Bomb.amount-10,20)
         listsupplies("TN2",tool[4],Bomb.amount-10,20)
     }
@@ -762,6 +765,19 @@ document.body.onkeyup=function(e){
             Dabutton()
         }
     }
+}
+if(screen.width<600){
+    document.getElementById('leftpannel').style.display='none';
+    let edit= document.getElementById('rightpannel');
+    edit.style.margin='0';
+    edit.style.paddingRight='30px';
+    edit.style.paddingLeft='30px';
+    square120.style.margin='0';
+    slotcap='15'
+    document.getElementsByTagName('body')[0].style.minWidth="500px";
+    const copy=document.getElementById('Tools').cloneNode(true);
+    document.getElementById('Tools').remove();
+    document.getElementsByTagName('footer')[0].appendChild(copy);
 }
 setTimeout(down,(518-19*(level+1))*1000/480)
 listusers()
