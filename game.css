@@ -17,11 +17,28 @@ footer{
     width: 100%;
     text-align: center;
     height: 12%;
-    opacity: 90%;
+    opacity: 80%;
     overflow-y: scroll;
+    margin: 0;
+    display: none;
+}
+#foot{
+    color: white;
+    width:100%;
+    position: fixed;
+    margin: 0;
+    height: 25px;
+    background: rgba(128, 128, 128,80%);
+}
+#arrow{
+    display: inline-block;
+    transform: rotate(180deg);
+    font-weight: bolder;
 }
 #sbody{
     display: flex;
+    height: 100vh;
+    justify-content: center;
 }
 img{
     margin: 0;
@@ -163,6 +180,7 @@ ol li div span{
     text-align: center;
     margin: 0;
     margin-right:10px ;
+    border-radius: 5px;
 }
 #hitbox{
     height: 650px;
@@ -200,6 +218,7 @@ ol li div span{
     min-width: 340px;
     padding: 10px;
     height:640px;;
+    border-radius: 10px;
     text-align: center;
 }
 #leftpannel h2{
@@ -230,6 +249,7 @@ ol li div span{
     padding-right:50px;
     padding-left:50px;
     text-align: center;
+    border-radius: 10px;
 }
 
 #button{

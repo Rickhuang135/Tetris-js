@@ -366,6 +366,20 @@ function Dabutton(){
     }
 }
 
+function hide(){
+    let element=document.getElementById('foot')
+    if(element.innerHTML=='Hide <span id="arrow">^</span>'){
+        element.innerHTML="show ^"
+        let transheight=window.innerHeight;
+        element.style.transform=`translateY(${transheight*0.07}px)`
+        document.getElementById('Tools').style.display='none'
+    }else{
+        element.innerHTML='Hide <span id="arrow">^</span>'
+        element.style.transform=''
+        document.getElementById('Tools').style.display='block'
+    }
+}
+
 function confit(x){
     if(score>0){
         recordscore()
@@ -424,18 +438,17 @@ function endgame(){
 function rowCheck(){
     let checkcount=0;
     for(var i=0;i<row[0].childNodes.length;i++){
-        if(row[0].childNodes[i].style.background!='transparent'){
-            if(row[0].childNodes[i].style.background!='bc1'){
-                endgame()
-                break;
-            }
+        if(row[0].childNodes[i].style.background!='transparent'&row[0].childNodes[i].style.background!='url(./Images/bc2.png)'){
+            endgame()
+            break;
         }
     }
     for(var i=1;i<row.length;i++){
         var rooow=row[i].childNodes
         var execute=true
         for(var j=0;j<rooow.length;j++){
-            if(rooow[j].style.background=='transparent'||rooow[j].style.background=='bc2'||rooow[j].style.background=='bc5'||rooow[j].style.background=='bc8'){
+            console.log(rooow[j].style.background)
+            if(rooow[j].style.background=='transparent'||rooow[j].style.background=='url("./Images/bc2.png")'||rooow[j].style.background=='url("./Images/bc5.png")'||rooow[j].style.background=='url("./Images/bc8.png")'){
                 execute=false
                 break;
             }
@@ -682,7 +695,6 @@ function down(){
 }
 
 document.addEventListener("keydown",function(event){
-    console.log(event.key)
     if(pause==false&reset==false){
         if(event.key=='ArrowLeft'){
             shape('left')
@@ -775,9 +787,13 @@ if(screen.width<600){
     square120.style.margin='0';
     slotcap='15'
     document.getElementsByTagName('body')[0].style.minWidth="500px";
-    const copy=document.getElementById('Tools').cloneNode(true);
-    document.getElementById('Tools').remove();
-    document.getElementsByTagName('footer')[0].appendChild(copy);
+    edit=document.getElementById('Tools');
+    edit.style.marginTop="17px"
+    const copy=edit.cloneNode(true);
+    edit.remove();
+    edit=document.getElementsByTagName('footer')[0];
+    edit.appendChild(copy);
+    edit.style.display="block";
 }
 setTimeout(down,(518-19*(level+1))*1000/480)
 listusers()
