@@ -5,7 +5,7 @@ import path from 'path';
 function FileSender(res,path){
     var myReadStream = fs.createReadStream(path);
     myReadStream.pipe(res);
-}
+};
 
 http.createServer((req,res)=>{
     console.log(req.url);

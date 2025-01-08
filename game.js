@@ -188,10 +188,24 @@ function listusers(){
             if(username===null){
                 username=`<i>null</i>`
             }
-            lisitem.innerHTML=`<div><span>${username}</span><span>${localStorage.getItem(`user${i}line`)}</span><span>${localStorage.getItem(`user${i}level`)}</span><span class='score'>${localStorage.getItem(`user${i}score`)}</span></div>`
-            scoreboard.appendChild(lisitem)
+            // lisitem.innerHTML=`<div><span>${username}</span><span>${localStorage.getItem(`user${i}line`)}</span><span>${localStorage.getItem(`user${i}level`)}</span><span class='score'>${localStorage.getItem(`user${i}score`)}</span></div>`
+            const wrapperDiv = document.createElement("div");
+            const nameEl = document.createElement("span");
+            nameEl.textContent=username;
+            wrapperDiv.appendChild(nameEl);
+            const linesEl = document.createElement("span");
+            linesEl.textContent=localStorage.getItem(`user${i}line`);
+            wrapperDiv.appendChild(linesEl);
+            const levelEl = document.createElement("span");
+            levelEl.textContent=localStorage.getItem(`user${i}level`)
+            wrapperDiv.appendChild(levelEl);
+            const scoreEl = document.createElement("span");
+            scoreEl.textContent=localStorage.getItem(`user${i}score`);
+            wrapperDiv.appendChild(scoreEl);
+            lisitem.appendChild(wrapperDiv);
+            scoreboard.appendChild(lisitem);
         }
-        sortusers()
+        sortusers();
     }
 }
 
