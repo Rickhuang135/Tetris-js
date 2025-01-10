@@ -72,17 +72,37 @@ if(isset($_POST["submit"])){
                     <h1 id='heading'>Game Over</h1>
                     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST" >
                         <label for="username"><strong>register username:</strong></label>
-                        <input type="text" placeholder="null" name="username" onkeyup=recordscore() maxlength="20">
+                        <input type="text" name="username" onkeyup=recordscore() maxlength="20">
                         <br>
-                        <label for="ownerphrase"><strong>ownership pass phrase:</strong></label>
-                        <input type="password" name="ownerphrase" maxlength="20">
+                        <label for="username" class="rejectInput">User name cannot be empty</label>
+                        <label for="ownerphraseadd"><strong>ownership pass phrase:</strong></label>
+                        <input type="password" name="ownerphraseadd" maxlength="20">
+                        <br>
+                        <label for="ownerphraseadd" class="rejectInput">These words are not accepted</label>
                         <div id="confitwrapper">
                             <div id='confit'>
-                                <input type="submit" class='sbutton' id="yes" value="confirm" name="submit"/>
+                                <button class='sbutton' id="yes" onclick=confit(this)>confirm</button>
                                 <button class='sbutton' id="no" onclick=confit(this)>cancel</button>
                             </div>
                         </div>
                         <button class='sb button' onclick=music()>Music:<span class='Mstate'>on</span></button>
+                        <br>
+                    </form>
+                </div>
+                <div id='setup3'>
+                    <h1 id='heading'>Do you wish to delete this entry?</h1>
+                    <div id="selectedForDelete"></div>
+                    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="DELETE" >
+                        <label for="ownerphrasedel"><strong>enter ownership pass phrase:</strong></label>
+                        <input type="password" name="ownerphrasedel" maxlength="20">
+                        <br>
+                        <label for="ownerphrasedel" class="rejectInput">These words are not accepted</label>
+                        <div id="deleteRecordWrapper">
+                            <div id='deleteRecord'>
+                                <button class='sbutton' id="delete" onclick=confit(this)>confirm</button>
+                                <button class='sbutton' id="cancel" onclick=confit(this)>cancel</button>
+                            </div>
+                        </div>
                         <br>
                     </form>
                 </div>

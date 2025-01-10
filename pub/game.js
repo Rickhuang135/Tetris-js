@@ -143,75 +143,80 @@ let commit=false
 let scoreboard=document.getElementById('scoreboard')
 let userinput=document.getElementsByName('username')[0]
 
-function clearscore(){
+function clearScoreBoard(){
     while(scoreboard.childNodes.length>0){
         scoreboard.removeChild(scoreboard.firstChild)
-    }
-}
+    };
+};
 
 function sortusers(ref=3){
+    //make request for users
     let sortbuttons=Array.prototype.slice.call(document.getElementsByClassName('tbutton'))
     sortbuttons.forEach(e=>e.classList.remove('active'))
     sortbuttons[ref-1].classList.add('active')
     let newarray=Array.prototype.slice.call(scoreboard.children)
+    if(newarray[newarray.length-1].id==="showMoreGames"){
+        var lastEl=newarray.pop();
+    };
     newarray.sort(function(a,b){return b.children[0].children[ref].innerHTML-a.children[0].children[ref].innerHTML})
     scoreboard.children=newarray
-    clearscore()
+    clearScoreBoard()
     for(var i=0;i<newarray.length;i++){
         scoreboard.appendChild(newarray[i])
     }
-}
+    if(lastEl){
+        scoreboard.appendChild(lastEl);
+    };
+};
 
-function listusers(){
-    // var newrec=document.getElementById('temporec')
-    // if(newrec!=undefined){
-    //     newrec=newrec.children[0]
-    //     var username=newrec.children[0].innerHTML
-    //     if(username==null){
-    //         username='j2w9bm7q'
-    //     }
-    //     var usernumb=localStorage.getItem('usernumb')
-    //     usernumb++
-    //     localStorage.setItem('usernumb',usernumb)
-    //     localStorage.setItem(`user${usernumb}`,username)
-    //     localStorage.setItem(`user${usernumb}level`,level)
-    //     localStorage.setItem(`user${usernumb}line`,totalline)
-    //     localStorage.setItem(`user${usernumb}score`,score)
-    //     element=undefined
-    //     level=0;
-    // }
-    // clearscore()
-    // usernumb=localStorage.getItem('usernumb')
-    // if(usernumb==undefined){
-    //     localStorage.setItem('usernumb',0)
-    // }else{
-    //     for(var i=1;i<=usernumb;i++){
-    //         var lisitem=document.createElement('li')
-    //         lisitem.id=`user${i}`
-    //         lisitem.oncontextmenu=function(){deletee(this)}
-    //         var username=localStorage.getItem(`user${i}`)
-    //         if(username===null){
-    //             username=`<i>null</i>`
-    //         }
-    //         // lisitem.innerHTML=`<div><span>${username}</span><span>${localStorage.getItem(`user${i}line`)}</span><span>${localStorage.getItem(`user${i}level`)}</span><span class='score'>${localStorage.getItem(`user${i}score`)}</span></div>`
-    //         const wrapperDiv = document.createElement("div");
-    //         const nameEl = document.createElement("span");
-    //         nameEl.textContent=username;
-    //         wrapperDiv.appendChild(nameEl);
-    //         const linesEl = document.createElement("span");
-    //         linesEl.textContent=localStorage.getItem(`user${i}line`);
-    //         wrapperDiv.appendChild(linesEl);
-    //         const levelEl = document.createElement("span");
-    //         levelEl.textContent=localStorage.getItem(`user${i}level`)
-    //         wrapperDiv.appendChild(levelEl);
-    //         const scoreEl = document.createElement("span");
-    //         scoreEl.textContent=localStorage.getItem(`user${i}score`);
-    //         wrapperDiv.appendChild(scoreEl);
-    //         lisitem.appendChild(wrapperDiv);
-    //         scoreboard.appendChild(lisitem);
-    //     }
-    //     sortusers();
-    // }
+function listusers(addDegree=0){
+    //make request for users
+    let usernumb=parseInt(localStorage.getItem('usernumb'));
+    if(usernumb==undefined){
+        usernumb=0;
+        localStorage.setItem('usernumb',usernumb);
+    };
+    const maxDisplayUsers=5;
+    const outStandingUserNumb=usernumb-addDegree*maxDisplayUsers;
+    const limit=Math.min(outStandingUserNumb,maxDisplayUsers)+addDegree*maxDisplayUsers;
+    for(var i=1+addDegree*maxDisplayUsers;i<=limit;i++){
+        var lisitem=document.createElement('li')
+        lisitem.id=`user${i}`
+        lisitem.oncontextmenu=function(event){
+            event.preventDefault();
+            deletee(this);
+        }
+        var username=localStorage.getItem(`user${i}`)
+        if(username===null){
+            username=`<i>null</i>`
+        }
+        const wrapperDiv = document.createElement("div");
+        const nameEl = document.createElement("span");
+        nameEl.className= "nameEl";
+        nameEl.textContent=username;
+        wrapperDiv.appendChild(nameEl);
+        const linesEl = document.createElement("span");
+        linesEl.textContent=localStorage.getItem(`user${i}line`);
+        wrapperDiv.appendChild(linesEl);
+        const levelEl = document.createElement("span");
+        levelEl.textContent=localStorage.getItem(`user${i}level`)
+        wrapperDiv.appendChild(levelEl);
+        const scoreEl = document.createElement("span");
+        scoreEl.textContent=localStorage.getItem(`user${i}score`);
+        wrapperDiv.appendChild(scoreEl);
+        lisitem.appendChild(wrapperDiv);
+        scoreboard.appendChild(lisitem);
+    };
+    if(outStandingUserNumb>maxDisplayUsers){
+        const showMoreEl=document.createElement('div');
+        showMoreEl.textContent=`see ${outStandingUserNumb-maxDisplayUsers} more`;
+        showMoreEl.id="showMoreGames";
+        showMoreEl.onclick=(event)=>{
+            event.target.remove();
+            listusers(++addDegree);
+        };
+        scoreboard.append(showMoreEl);
+    };
 }
 
 var element=undefined
@@ -220,28 +225,60 @@ function recordscore(){
     if(element==undefined){
         var recitem=document.createElement('li')
         recitem.id='temporec'
-        recitem.innerHTML=`<div><span>null</span><span>${line}</span><span>${level}</span><span class='score'>${score}</span></div>`
-        scoreboard.appendChild(recitem)
-        element=recitem
+        recitem.innerHTML=`<div><span class="nameEl">&nbsp</span><span>${line}</span><span>${level}</span><span class='score'>${score}</span></div>`
+        scoreboard.insertBefore(recitem,scoreboard.children[0]);
+        element=recitem;
     }else{
-        if(userinput.value==null||userinput.value==''){
-            element.children[0].children[0].innerHTML='null'
+        if(userinput.value===''){
+            element.children[0].children[0].innerHTML='&nbsp;';
         }else{
-            element.children[0].children[0].innerHTML=userinput.value
+            element.children[0].children[0].innerHTML=userinput.value;
         }
-    }
-}
+    };
+};
 
-cd=document.getElementById('cs')
-function cs(state='0'){
+const stateTracker=[1,1];
+function cs(state=0){
+    cd=document.getElementById('cs')
     const hitbox=document.getElementById('hitbox')
     switch(state){
-        case 0:cd.children[0].style.display='none';cd.children[1].style.display='none';cd.style.background='transparent';hitbox.style.display="block";break
-        case 1:cd.children[0].style.display='block';var res=document.getElementById('spacing').children[0];hitbox.style.display="none";if(score>0){res.style.display='inline-block'}else{res.style.display='none'};cd.children[1].style.display='none';cd.style.background='rgba(255, 255, 255, 90%)';break
-        case 2:cd.children[0].style.display='none';cd.children[1].style.display='block';hitbox.style.display="none";cd.style.background='rgba(255, 255, 255, 90%)';break
-    }
-}
-cs(1)
+        case 0:
+            //play mode
+            cd.children[0].style.display='none';
+            cd.children[1].style.display='none';
+            cd.children[2].style.display='none';
+            cd.style.background='transparent';
+            hitbox.style.display="block";break
+        case 1:
+            //pause mode
+            cd.children[2].style.display='none';
+            cd.children[0].style.display='block';
+            var res=document.getElementById('spacing').children[0];
+            hitbox.style.display="none";
+            if(score>0){
+                res.style.display='inline-block'
+            }else{res.style.display='none'};
+            cd.children[1].style.display='none';
+            cd.style.background='rgba(255, 255, 255, 90%)';break
+        case 2:
+            //post mode
+            cd.children[2].style.display='none';
+            cd.children[0].style.display='none';
+            cd.children[1].style.display='block';
+            hitbox.style.display="none";
+            cd.style.background='rgba(255, 255, 255, 90%)';break
+            case 3:
+            //delete mode
+            cd.children[0].style.display='none';
+            cd.children[1].style.display='none';
+            cd.children[2].style.display='block';
+            hitbox.style.display="none";
+            cd.style.background='rgba(255, 255, 255, 90%)';break
+        }
+    stateTracker.unshift(state);
+    stateTracker.pop();
+};
+cs(1);
 
 function nextShape(){
     if(button.childNodes[1].childNodes!=undefined){
@@ -310,20 +347,14 @@ function listsupplies(img,arnumb,limit,lim2){
 Tools()
 
 function deletee(element){
-    addEventListener("contextmenu",(e)=>{e.preventDefault()})
-    if(window.confirm('do you wish to delet this record?')){
-        var usernumb=localStorage.getItem('usernumb')
-        localStorage.setItem(element.id,localStorage.getItem(`user${usernumb}`))
-        localStorage.setItem(`${element.id}line`,localStorage.getItem(`user${usernumb}line`))
-        localStorage.setItem(`${element.id}level`,localStorage.getItem(`user${usernumb}level`))
-        localStorage.setItem(`${element.id}score`,localStorage.getItem(`user${usernumb}score`))
-        localStorage.removeItem(`user${usernumb}`);
-        localStorage.removeItem(`user${usernumb}line`);
-        localStorage.removeItem(`user${usernumb}level`);
-        localStorage.removeItem(`user${usernumb}score`);
-        usernumb--
-        localStorage.setItem('usernumb',usernumb)
-        listusers()
+    if(stateTracker[0]!=3){
+        pause=true;
+        selectedForDeleteEl=document.getElementById("selectedForDelete");
+        selectedForDeleteEl.innerHTML='';
+        const clonedElement=element.children[0].cloneNode(true);
+        clonedElement.id=`toExpireIndex${element.id}`;
+        selectedForDeleteEl.appendChild(clonedElement);
+        cs(3);
     }
 }
 
@@ -357,10 +388,8 @@ let newbuttons=document.getElementsByClassName('play')
 function Dabutton(){
     if(pause){
         if(reset){
-            listusers()
             resetboard()
             newbuttons[0].innerHTML='Resume'
-            // newbuttons[1].innerHTML='Resume'
             reset=false
         }
         buttonbg.style.background='none'
@@ -383,7 +412,7 @@ function Dabutton(){
         audio.pause();
         cs(1)
     }
-}
+};
 
 function hide(){
     let element=document.getElementById('foot')
@@ -397,22 +426,115 @@ function hide(){
         element.style.transform=''
         document.getElementById('Tools').style.display='block'
     }
-}
+};
+
+function rejectInput(reset=false){
+    const rejectEls=document.getElementsByClassName("rejectInput");
+    console.log(rejectEls);
+    for(let i=0; i<rejectEls.length;i++){
+        const rejectEl = rejectEls[i];
+        const correspondingInput =document.getElementsByName(rejectEl.htmlFor)[0];
+        if(correspondingInput.value===''&&!reset){
+            rejectEl.style.display="block";
+            correspondingInput.style.borderColor="red"
+        }else{
+            rejectEl.style.display="none";
+            correspondingInput.style.borderColor="black"
+        };
+    };
+};
 
 function confit(x){
-    
-    if(score>0){
-        recordscore()
-        if(x.id==='no'){
+    switch(x.id){
+        case "no":
+            //don't add new game entry
+            rejectInput(true);
             element.remove()
-        }else{
-            listusers()
-        }
-        score=0
-        leveldisplay.innerHTML=level
-        cs(1)
-        element=undefined
+            score=0
+            leveldisplay.innerHTML=level
+            cs(1)
+            element=undefined
+            break;
+        case "yes":
+            //add new game entry
+            var newrec=document.getElementById('temporec');
+            let username=newrec.children[0].children[0].innerHTML;
+            username.trim();
+            const addformEl=document.getElementById("setup2").getElementsByTagName('form')[0];
+            const addformInputs=addformEl.getElementsByTagName("input");
+            if(addformInputs[0].value==='' || addformInputs[1].value===''){
+                //take rejective action
+                rejectInput();
+                console.log("no good");
+            }else{
+                rejectInput(true);
+                var usernumb=localStorage.getItem('usernumb');
+                usernumb++
+                //hydrating the new user li
+                newrec.id=`user${usernumb}`;
+                newrec.oncontextmenu=function(event){
+                    event.preventDefault();
+                    deletee(this);
+                };
+                //check if 
+                sortusers();
+                localStorage.setItem('usernumb',usernumb)
+                localStorage.setItem(`user${usernumb}`,username)
+                localStorage.setItem(`user${usernumb}level`,level)
+                localStorage.setItem(`user${usernumb}line`,totalline)
+                localStorage.setItem(`user${usernumb}score`,score)
+                element=undefined
+                level=0;
+                score=0;
+                leveldisplay.innerHTML=level;
+                cs(1);
+                element=undefined;
+            };
+            break;
+        case "delete":
+            //delete record
+            const deleteformEl=document.getElementById("setup3").getElementsByTagName('form')[0];
+            const deleteformInputs=deleteformEl.getElementsByTagName("input");
+            if(deleteformInputs[0].value===''){
+                //take rejective action
+                rejectInput();
+                console.log("no good");
+            }else{
+                rejectInput(true);
+                selectedForDeleteEl=document.getElementById("selectedForDelete");
+                const expiredUser=selectedForDeleteEl.children[0].id.substring(13);
+                //overwritting expired entry with last entry in storage
+                var usernumb=localStorage.getItem('usernumb');
+                localStorage.setItem(expiredUser,localStorage.getItem(`user${usernumb}`))
+                localStorage.setItem(`${expiredUser}line`,localStorage.getItem(`user${usernumb}line`))
+                localStorage.setItem(`${expiredUser}level`,localStorage.getItem(`user${usernumb}level`))
+                localStorage.setItem(`${expiredUser}score`,localStorage.getItem(`user${usernumb}score`))
+                localStorage.removeItem(`user${usernumb}`);
+                localStorage.removeItem(`user${usernumb}line`);
+                localStorage.removeItem(`user${usernumb}level`);
+                localStorage.removeItem(`user${usernumb}score`);
+                //delete expired graphic li element
+                const expiredEl=document.getElementById(expiredUser);
+                expiredEl.remove();
+                //updating new storage length
+                usernumb--;
+                localStorage.setItem('usernumb',usernumb);
+                if(stateTracker[1]===0){
+                    pause=false;
+                };
+                cs(stateTracker[1]);
+            };
+            break;
+        case "cancel":
+            //don't delete record
+            rejectInput(true);
+            if(stateTracker[1]===0){
+                pause=false;
+            }
+            cs(stateTracker[1]);
+            break;
     }
+
 }
 
 function resetboard(){
@@ -449,7 +571,6 @@ function endgame(){
     pause=true;
     reset=true;
     newbuttons[0].innerHTML='New game'
-    // newbuttons[1].innerHTML='New game'
     audio.pause();
     cs(2)
     recordscore()
@@ -848,19 +969,25 @@ document.getElementsByClassName("sb button")[1].onclick=()=>{
 document.getElementsByClassName("play button")[0].onclick=()=>{
     Dabutton();
 };
-// document.getElementsByClassName("play button")[1].onclick=()=>{
-//     Dabutton();
-// };
 document.getElementsByName("username")[0].onkeyup=()=>{
     recordscore();
 };
 const sbuttonElements = document.getElementsByClassName("sbutton")
-// sbuttonElements[0].onclick=()=>{
-//     confit(sbuttonElements[0]);
-// };
+sbuttonElements[0].onclick=(event)=>{
+    event.preventDefault();
+    confit(sbuttonElements[0]);
+};
 sbuttonElements[1].onclick=(event)=>{
     event.preventDefault();
     confit(sbuttonElements[1]);
+};
+sbuttonElements[2].onclick=(event)=>{
+    event.preventDefault();
+    confit(sbuttonElements[2]);
+};
+sbuttonElements[3].onclick=(event)=>{
+    event.preventDefault();
+    confit(sbuttonElements[3]);
 };
 document.getElementById("levelout").onclick=()=>{
     addlevel();
@@ -871,14 +998,6 @@ document.getElementById("button").onclick=()=>{
 document.getElementById('foot').onclick=()=>{
     hide();
 };
-
-
-
-
-
-
-
-
 
 setTimeout(down,(518-19*(level+1))*1000/480)
 listusers()

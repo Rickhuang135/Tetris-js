@@ -12,8 +12,10 @@ body{
     background-color: rgb(60,192,198);
 }
 input{
+    width: 192px;
     margin-top: 5px;
     margin-bottom: 2px;
+    border-width: 1px;
 }
 footer{
     bottom: 0;
@@ -52,6 +54,7 @@ button{
 }
 ol{
     overflow-y: scroll;
+    scrollbar-width: thin;
     height: 300px;
     margin: 0;
 }
@@ -66,7 +69,28 @@ ol li div span{
     min-width:75px ;
     height: 30px;
     overflow-y: hidden;
+    white-space: nowrap;
     scrollbar-width: none;
+}
+ol li div .nameEl{
+    text-align: left;   
+}
+#selectedForDelete{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+#selectedForDelete div{
+    width: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.rejectInput{
+    display: none;
+    margin: 0;
+    color: red;
 }
 h3{
     margin: 0;
@@ -135,7 +159,7 @@ h4{
     text-shadow:grey 3px 2px;
     text-align: center;
 }
-#setup2{
+#setup2,#setup3{
     display: none;
     text-align: center;
 }
@@ -147,13 +171,13 @@ h4{
     text-align: center;
     display:block
 }
-#confit{
+#confit, #deleteRecord{
+    width: 200px;
     margin-top: 10px;
     display: flex;
     justify-content: space-between;
-    width: 200px;
 }
-#confitwrapper{
+#confitwrapper, #deleteRecordWrapper{
     width: 100%;
     display: flex;
     justify-content: center;
@@ -166,11 +190,11 @@ h4{
     width: 90px;
     border: transparent;
 }
-#yes{
+#yes, #delete{
     background-color:rgb(30, 209, 30);
     color: white;
 }
-#no:hover{
+#no:hover, #cancel:hover{
     background:red
 }
 #yes:hover{
