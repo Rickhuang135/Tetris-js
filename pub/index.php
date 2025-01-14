@@ -1,24 +1,7 @@
 <?php 
-define('db_User', getenv("db_User"));
-define('db_Name', getenv("db_Name"));
-define('db_Host', getenv("db_Host"));
-define('db_Pass', getenv("db_Pass"));
+include 'database.php';
 
-$db_connection = new mysqli(db_Host,db_User,db_Pass,db_Name);
 
-if($db_connection->connect_error){
-    die('Connection failed'. $db_connection->connect_error);
-};
-
-if(isset($_POST["submit"])){
-    echo "submit";
-    // go to database 
-    // check if the user name exist
-    // if doesn't exist, create new user with hashed password
-    // if does exist, check if password matches, then save or return error
-    $destination=htmlspecialchars($_SERVER['PHP_SELF']);
-    header("Location: {$destination}");
-};
 
 ?>
 <!DOCTYPE html>
@@ -39,11 +22,36 @@ if(isset($_POST["submit"])){
             <h2>Leader board</h2>
             <div id='namescore'>
                 <p id='wp'>name</p>
-                <p onclick=sortusers(1) class='tbutton'>lines</p>
-                <p onclick=sortusers(2) class='tbutton'>level</p>
-                <p onclick=sortusers(3) class='tbutton active'>score</p>
+                <p class='tbutton'>lines</p>
+
+                <p class='tbutton'>level</p>
+
+                <p class='tbutton active'>score</p>
             </div>
-            <ol id='scoreboard'></ol>
+            <ol id='scoreboard'>
+                <?php
+                    $games=getGames($db_connection);
+                    $totalGames=getGamesCount($db_connection);
+                    foreach($games as $game):
+                ?>
+                <li id="game<?php echo $game["game_id"]?>" >
+                    <div>
+                        <span class="nameEl"><?php echo $game["username"]?></span>
+                        <span><?php echo $game["lines"]?></span>
+                        <span><?php echo $game["level"]?></span>
+                        <span><?php echo $game["score"]?></span>
+                    </div>
+                </li>
+                <?php endforeach;
+                if($totalGames>HARDQUERYLIMIT):
+                ?>
+                    <div id="showMoreGames">
+                        see <?php echo $totalGames-HARDQUERYLIMIT?> more
+                    </div>
+                <?php endif;
+                    //use this space for echo testing php stuff
+                ?>
+            </ol>
             <div id="Tools">
                 <h3>Newtons:<span>click/F</span></h3>
                 <div onclick=Newton.que()></div>
@@ -70,7 +78,7 @@ if(isset($_POST["submit"])){
                 </div>
                 <div id='setup2'>
                     <h1 id='heading'>Game Over</h1>
-                    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST" >
+                    <form method="POST" >
                         <label for="username"><strong>register username:</strong></label>
                         <input type="text" name="username" onkeyup=recordscore() maxlength="20">
                         <br>
@@ -92,7 +100,7 @@ if(isset($_POST["submit"])){
                 <div id='setup3'>
                     <h1 id='heading'>Do you wish to delete this entry?</h1>
                     <div id="selectedForDelete"></div>
-                    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="DELETE" >
+                    <form method="DELETE" >
                         <label for="ownerphrasedel"><strong>enter ownership pass phrase:</strong></label>
                         <input type="password" name="ownerphrasedel" maxlength="20">
                         <br>

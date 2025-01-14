@@ -5,14 +5,17 @@ show tables;
 select * from Games;
 
 -- @block
-drop table Games;
+select * from Players;
+
+-- @block
+delete from Players
+where id = 9;
 
 -- @block
 create table Players (
     id int primary key AUTO_INCREMENT,
     username varchar(255),
     passphrase varchar(255),
-    salt varchar(255),
     created datetime not null default CURRENT_TIMESTAMP
 );
 
@@ -28,10 +31,8 @@ create table Games (
 );
 
 -- @block
-alter table Games
-modify `lines` int after player_id;
-
-
+alter table Players
+drop salt;
 
 -- @block
 select
@@ -42,3 +43,19 @@ select
     salt
 from Games
 right join Players on Players.id=Games.player_id;
+
+-- @block    
+select 
+        player_id,
+        username,
+        `lines`,
+        level,
+        score,
+        date
+    from Games
+    left join Players
+    on Players.id=Games.player_id
+    order by score asc
+    limit 100
+
+

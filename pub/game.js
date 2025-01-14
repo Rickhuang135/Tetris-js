@@ -149,91 +149,170 @@ function clearScoreBoard(){
     };
 };
 
-function sortusers(ref=3){
-    //make request for users
-    let sortbuttons=Array.prototype.slice.call(document.getElementsByClassName('tbutton'))
-    sortbuttons.forEach(e=>e.classList.remove('active'))
-    sortbuttons[ref-1].classList.add('active')
-    let newarray=Array.prototype.slice.call(scoreboard.children)
-    if(newarray[newarray.length-1].id==="showMoreGames"){
-        var lastEl=newarray.pop();
-    };
-    newarray.sort(function(a,b){return b.children[0].children[ref].innerHTML-a.children[0].children[ref].innerHTML})
-    scoreboard.children=newarray
-    clearScoreBoard()
-    for(var i=0;i<newarray.length;i++){
-        scoreboard.appendChild(newarray[i])
-    }
-    if(lastEl){
-        scoreboard.appendChild(lastEl);
+function hydrateLeaderBoard(){
+    let offset=0;
+    let sort='score';
+    const sortbuttons=Array.prototype.slice.call(document.getElementsByClassName('tbutton'));
+    sortbuttons.forEach((element)=>{
+        element.onclick=()=>{
+            sortbuttons.forEach(e=>e.classList.remove('active'));
+            element.classList.add('active');
+            sort = element.innerHTML;
+            offset=0;
+            const body={
+                "sort":sort,
+                "more":0
+            };
+            fetchRequest("GET", body, (response)=>{
+                clearScoreBoard();
+                generateLeaderBoard(response.games, response.more, sort, offset);
+            }, (response)=>{
+                console.log(response);
+            });
+        };
+    });
+    const liEls=Array.prototype.slice.call(scoreboard.children);
+    if(liEls.length!=0){
+        if(liEls[liEls.length-1].id==="showMoreGames"){
+            var lastEl=liEls.pop();
+        };
+        liEls.forEach(element=>element.oncontextmenu=function(event){
+            event.preventDefault();
+            deletee(element);
+        });
+        if(lastEl){
+            lastEl.onclick=function(){
+                const body={
+                    "sort":sort,
+                    "more":++offset
+                };
+                fetchRequest("GET", body, (response)=>{
+                    generateLeaderBoard(response.games, response.more, sort, offset);
+                    lastEl.remove();
+                }, (response)=>{
+                    console.log(response);
+                });
+            };
+            scoreboard.appendChild(lastEl);
+        };
     };
 };
 
-function listusers(addDegree=0){
-    //make request for users
-    let usernumb=parseInt(localStorage.getItem('usernumb'));
-    if(usernumb==undefined){
-        usernumb=0;
-        localStorage.setItem('usernumb',usernumb);
-    };
-    const maxDisplayUsers=5;
-    const outStandingUserNumb=usernumb-addDegree*maxDisplayUsers;
-    const limit=Math.min(outStandingUserNumb,maxDisplayUsers)+addDegree*maxDisplayUsers;
-    for(var i=1+addDegree*maxDisplayUsers;i<=limit;i++){
-        var lisitem=document.createElement('li')
-        lisitem.id=`user${i}`
+function generateLeaderBoard(contenceArray, more, sort, offset){
+    contenceArray.forEach((entry)=>{
+        const lisitem=document.createElement('li');
+        lisitem.id=`game${entry.game_id}`;
         lisitem.oncontextmenu=function(event){
             event.preventDefault();
             deletee(this);
-        }
-        var username=localStorage.getItem(`user${i}`)
-        if(username===null){
-            username=`<i>null</i>`
-        }
+        };
         const wrapperDiv = document.createElement("div");
         const nameEl = document.createElement("span");
         nameEl.className= "nameEl";
-        nameEl.textContent=username;
+        nameEl.textContent=entry.username;
         wrapperDiv.appendChild(nameEl);
         const linesEl = document.createElement("span");
-        linesEl.textContent=localStorage.getItem(`user${i}line`);
+        linesEl.textContent= entry.lines;
         wrapperDiv.appendChild(linesEl);
         const levelEl = document.createElement("span");
-        levelEl.textContent=localStorage.getItem(`user${i}level`)
+        levelEl.textContent= entry.level;
         wrapperDiv.appendChild(levelEl);
         const scoreEl = document.createElement("span");
-        scoreEl.textContent=localStorage.getItem(`user${i}score`);
+        scoreEl.textContent=entry.score;
         wrapperDiv.appendChild(scoreEl);
         lisitem.appendChild(wrapperDiv);
         scoreboard.appendChild(lisitem);
-    };
-    if(outStandingUserNumb>maxDisplayUsers){
+    });
+    if(more>0){
         const showMoreEl=document.createElement('div');
-        showMoreEl.textContent=`see ${outStandingUserNumb-maxDisplayUsers} more`;
+        showMoreEl.textContent=`see ${more} more`;
         showMoreEl.id="showMoreGames";
-        showMoreEl.onclick=(event)=>{
-            event.target.remove();
-            listusers(++addDegree);
+        showMoreEl.onclick=function(){
+            const body={
+                "sort":sort,
+                "more":++offset
+            };
+            fetchRequest("GET", body, (response)=>{
+                generateLeaderBoard(response.games, response.more, sort, offset);
+                showMoreEl.remove();
+            }, (response)=>{
+                console.log(response);
+            });
         };
         scoreboard.append(showMoreEl);
     };
-}
+};
+
+    function orderNewGame(response){
+        const liEls=Array.prototype.slice.call(scoreboard.children);
+        if(liEls[liEls.length-1].id==="showMoreGames"){
+            var lastEl=liEls.pop();
+        };
+        const sort = document.getElementsByClassName("tbutton active")[0].textContent;
+        const lastShownGame=liEls[liEls.length-1];
+        const newrec=liEls.shift();
+        switch(sort){
+            case 'username':
+                var comparisonIndex=0;
+                break;
+            case 'lines':
+                var comparisonIndex=1;
+                break;
+            case 'level':
+                var comparisonIndex=2;
+                break;
+            default:
+                var comparisonIndex=3;
+                break;
+        };
+        if(Number(newrec.children[0].children[comparisonIndex].textContent.trim())>Number(lastShownGame.children[0].children[comparisonIndex].textContent.trim())){
+            newrec.id='game'+response.game_id;
+            newrec.oncontextmenu=function(event){
+                event.preventDefault();
+                deletee(this);
+            };
+            for(let i=0; i<liEls.length;i++){
+                const entry = liEls[i];
+                if(Number(entry.children[0].children[comparisonIndex].textContent.trim())<Number(newrec.children[0].children[comparisonIndex].textContent.trim())){
+                    liEls.splice(i,0,newrec);
+                    break;
+                };
+            };
+            if(lastEl){
+                liEls.push(lastEl);
+            }
+        }else{
+            if(lastEl){
+                const more=Number(lastEl.textContent.trim().substring(4,5));   
+                lastEl.textContent="see "+(more+1)+" more";
+                liEls.push(lastEl);
+            }else{
+                newrec.id='game'+response.game_id;
+                newrec.oncontextmenu=function(event){
+                    event.preventDefault();
+                    deletee(this);
+                };
+                liEls.push(newrec);
+            };
+        };
+        scoreboard.replaceChildren(...liEls);
+};
 
 var element=undefined
 function recordscore(){
     userinput.focus()
     if(element==undefined){
         var recitem=document.createElement('li')
-        recitem.id='temporec'
+        recitem.id='temporec';
         recitem.innerHTML=`<div><span class="nameEl">&nbsp</span><span>${line}</span><span>${level}</span><span class='score'>${score}</span></div>`
         scoreboard.insertBefore(recitem,scoreboard.children[0]);
         element=recitem;
     }else{
-        if(userinput.value===''){
+        if(userinput.value.trim()===''){
             element.children[0].children[0].innerHTML='&nbsp;';
         }else{
             element.children[0].children[0].innerHTML=userinput.value;
-        }
+        };
     };
 };
 
@@ -267,7 +346,7 @@ function cs(state=0){
             cd.children[1].style.display='block';
             hitbox.style.display="none";
             cd.style.background='rgba(255, 255, 255, 90%)';break
-            case 3:
+        case 3:
             //delete mode
             cd.children[0].style.display='none';
             cd.children[1].style.display='none';
@@ -278,7 +357,7 @@ function cs(state=0){
     stateTracker.unshift(state);
     stateTracker.pop();
 };
-cs(1);
+// cs(1);
 
 function nextShape(){
     if(button.childNodes[1].childNodes!=undefined){
@@ -365,24 +444,35 @@ function addlevel(){
     }
 }
 
-let playmusic=localStorage.getItem('music')
+let playmusic=false;
 function music(){
+    console.log(playmusic);
     var md=Array.prototype.slice.call(document.getElementsByClassName('Mstate'))
-    if(playmusic=='true'||playmusic==true){
+    if(playmusic===true){
         md.forEach(x=>x.innerHTML='off')
         playmusic=false
-        localStorage.setItem('music',true)
+        localStorage.setItem('music',false)
     }else{
         md.forEach(x=>x.innerHTML='on')
-        playmusic=true
-        localStorage.setItem('music',false)
+        playmusic=true;
+        localStorage.setItem('music',true);
     }
 }
-if(playmusic==undefined){
-    localStorage.setItem('music',false)
-    playmusic=false
-}
-music()
+(()=>{
+    const storageItem=localStorage.getItem('music');
+    const md=Array.prototype.slice.call(document.getElementsByClassName('Mstate'))
+    if(storageItem===undefined){
+        localStorage.setItem('music',false)
+        playmusic=false
+    }else if(storageItem==='true'){
+        md.forEach(x=>x.innerHTML='on');
+        playmusic=true;
+    }else{
+        md.forEach(x=>x.innerHTML='off');
+        playmusic=false;
+    }
+})();
+
 let newbuttons=document.getElementsByClassName('play')
 
 function Dabutton(){
@@ -395,7 +485,7 @@ function Dabutton(){
         buttonbg.style.background='none'
         button.style.display='block';
         pause=false;
-        initial=true
+        initial=true;
         nextShape()
         buttondiscript.innerHTML='Next:';
         cs(0)
@@ -403,10 +493,6 @@ function Dabutton(){
             audio.play();
         }
     }else{
-        // buttonbg.style.background='url(./Images/pause-button.png)'
-        // buttonbg.style.backgroundSize='170%'
-        // buttonbg.style.backgroundPosition='center'
-        // button.style.display='none'
         buttondiscript.innerHTML='Paused'
         pause=true;
         audio.pause();
@@ -430,7 +516,6 @@ function hide(){
 
 function rejectInput(reset=false){
     const rejectEls=document.getElementsByClassName("rejectInput");
-    console.log(rejectEls);
     for(let i=0; i<rejectEls.length;i++){
         const rejectEl = rejectEls[i];
         const correspondingInput =document.getElementsByName(rejectEl.htmlFor)[0];
@@ -444,86 +529,106 @@ function rejectInput(reset=false){
     };
 };
 
+function jsonToUrl(jsonObj){
+    let url = '?';
+    for(const key in jsonObj){
+        url+=key+'='+jsonObj[key]+'&';
+    };
+    return url.slice(0,url.length-1);
+};
+
+function fetchRequest(method, jsonbody, callbacksuccess, callbackfail){
+    let url="api.php";
+    const fetchObject={
+        method,
+        headers:{
+            'Accept':'application/json'
+        },
+    };
+    if(method==="GET"){
+        url+=jsonToUrl(jsonbody);
+    }else{
+        fetchObject["body"]=JSON.stringify(jsonbody);
+    };
+    fetch(url, fetchObject).then(async (rawRes)=>{
+        const response = await rawRes.json();
+        if(response.result==="succeeded"){
+            callbacksuccess(response);
+        }else{
+            callbackfail(response);
+        };
+    });
+}
+
 function confit(x){
     switch(x.id){
         case "no":
             //don't add new game entry
             rejectInput(true);
-            element.remove()
+            if(element!==undefined){
+                element.remove();
+                element=undefined;
+            };
             score=0
             leveldisplay.innerHTML=level
             cs(1)
-            element=undefined
             break;
         case "yes":
             //add new game entry
-            var newrec=document.getElementById('temporec');
-            let username=newrec.children[0].children[0].innerHTML;
-            username.trim();
             const addformEl=document.getElementById("setup2").getElementsByTagName('form')[0];
             const addformInputs=addformEl.getElementsByTagName("input");
-            if(addformInputs[0].value==='' || addformInputs[1].value===''){
+            const username=addformInputs[0].value.trim();            
+            if(username==''){
                 //take rejective action
                 rejectInput();
-                console.log("no good");
             }else{
-                rejectInput(true);
-                var usernumb=localStorage.getItem('usernumb');
-                usernumb++
-                //hydrating the new user li
-                newrec.id=`user${usernumb}`;
-                newrec.oncontextmenu=function(event){
-                    event.preventDefault();
-                    deletee(this);
+                const body = {
+                    username,
+                    "password":addformInputs[1].value,
+                    "lines":line,
+                    "score":score,
+                    "level":level,
                 };
-                //check if 
-                sortusers();
-                localStorage.setItem('usernumb',usernumb)
-                localStorage.setItem(`user${usernumb}`,username)
-                localStorage.setItem(`user${usernumb}level`,level)
-                localStorage.setItem(`user${usernumb}line`,totalline)
-                localStorage.setItem(`user${usernumb}score`,score)
-                element=undefined
-                level=0;
-                score=0;
-                leveldisplay.innerHTML=level;
-                cs(1);
-                element=undefined;
+                fetchRequest("POST", body, (response)=>{
+                    rejectInput(true);
+                    orderNewGame(response);
+                    level=0;
+                    score=0;
+                    leveldisplay.innerHTML=level;
+                    cs(1);
+                    element=undefined;
+                }, (response)=>{
+                    addformInputs[1].value='';
+                    console.log(response);
+                    rejectInput();
+                });
             };
             break;
         case "delete":
             //delete record
             const deleteformEl=document.getElementById("setup3").getElementsByTagName('form')[0];
             const deleteformInputs=deleteformEl.getElementsByTagName("input");
-            if(deleteformInputs[0].value===''){
-                //take rejective action
-                rejectInput();
-                console.log("no good");
-            }else{
+            const selectedForDeleteEl=document.getElementById("selectedForDelete");
+            const spanList=selectedForDeleteEl.getElementsByTagName("span");
+            const expiredGameId=selectedForDeleteEl.children[0].id.substring(17);
+            const body = {
+                "username" : spanList[0].textContent,
+                "password" : deleteformInputs[0].value,
+                "id": expiredGameId
+            };
+            fetchRequest('DELETE', body, (response)=>{
                 rejectInput(true);
-                selectedForDeleteEl=document.getElementById("selectedForDelete");
-                const expiredUser=selectedForDeleteEl.children[0].id.substring(13);
-                //overwritting expired entry with last entry in storage
-                var usernumb=localStorage.getItem('usernumb');
-                localStorage.setItem(expiredUser,localStorage.getItem(`user${usernumb}`))
-                localStorage.setItem(`${expiredUser}line`,localStorage.getItem(`user${usernumb}line`))
-                localStorage.setItem(`${expiredUser}level`,localStorage.getItem(`user${usernumb}level`))
-                localStorage.setItem(`${expiredUser}score`,localStorage.getItem(`user${usernumb}score`))
-                localStorage.removeItem(`user${usernumb}`);
-                localStorage.removeItem(`user${usernumb}line`);
-                localStorage.removeItem(`user${usernumb}level`);
-                localStorage.removeItem(`user${usernumb}score`);
                 //delete expired graphic li element
-                const expiredEl=document.getElementById(expiredUser);
+                const expiredEl=document.getElementById("game"+expiredGameId);
                 expiredEl.remove();
-                //updating new storage length
-                usernumb--;
-                localStorage.setItem('usernumb',usernumb);
                 if(stateTracker[1]===0){
                     pause=false;
                 };
                 cs(stateTracker[1]);
-            };
+            }, ()=>{
+                deleteformInputs[0].value='';
+                rejectInput();
+            });
             break;
         case "cancel":
             //don't delete record
@@ -854,10 +959,6 @@ document.addEventListener("keydown",function(event){
         if(event.key=='f'){
             Newton.que()
         }
-    }else if(reset){
-        if(event.key=='Enter'){
-            confit(document.getElementById('yes'))
-        }
     }
 })
 
@@ -911,9 +1012,9 @@ document.addEventListener('visibilitychange',function(){
         }
     }
 })
-document.body.onkeyup=function(e){
+document.body.onkeyup=function(element){
     if(reset==false){
-        if(e.keyCode==32||e.keyCode==27){
+        if(element.keyCode==32||element.keyCode==27){
             Dabutton()
         }
     }
@@ -928,7 +1029,7 @@ if(screen.width<600){
     slotcap='15'
     document.getElementsByTagName('body')[0].style.minWidth="500px";
     edit=document.getElementById('Tools');
-    edit.style.marginTop="17px"
+    edit.style.marginTop="17px";
     const copy=edit.cloneNode(true);
     edit.remove();
     edit=document.getElementsByTagName('footer')[0];
@@ -937,16 +1038,6 @@ if(screen.width<600){
 }
 
 //assign click functions
-const tbuttonElements = document.getElementsByClassName("tbutton");
-tbuttonElements[0].onclick=()=>{
-    sortusers(1);
-};
-tbuttonElements[1].onclick=()=>{
-    sortusers(2);
-};
-tbuttonElements[2].onclick=()=>{
-    sortusers(3);
-};
 const toolsElements = document.getElementById("Tools");
 const toolsDisplayElements = toolsElements.getElementsByTagName('div');
 toolsDisplayElements[0].onclick=()=>{
@@ -1000,6 +1091,6 @@ document.getElementById('foot').onclick=()=>{
 };
 
 setTimeout(down,(518-19*(level+1))*1000/480)
-listusers()
+hydrateLeaderBoard();
 // localStorage.clear()
 })()
