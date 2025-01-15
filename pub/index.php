@@ -12,6 +12,7 @@ include 'database.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cetris</title>
     <link rel="stylesheet" href="game.css">
+    <link rel="icon" type="image/png" href="./Images/red.png"/>
 </head>
 <body>
     <audio id="Theme" loop>
